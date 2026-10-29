@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>Smart Energy Meter</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121d30;
+      --panel2: #17243a;
+      --text: #f3f7ff;
+      --muted: #9aabc4;
+      --line: rgba(255,255,255,.09);
+      --accent: #43d9b0;
+      --blue: #63a9ff;
+      --orange: #ffb45f;
+      --purple: #b59aff;
+      --danger: #ff6b7a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; color: var(--text); background:
+        radial-gradient(circle at top right, rgba(67,217,176,.10), transparent 32%),
+        radial-gradient(circle at top left, rgba(99,169,255,.10), transparent 30%), var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+    .wrap { width: min(100% - 28px, 900px); margin: 0 auto; padding: 24px 0 34px; }
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+    .logo {
+      width: 52px; height: 52px; display: grid; place-items: center; border-radius: 16px;
+      background: linear-gradient(145deg, #43d9b0, #278cbb); color: #071522; font-size: 26px;
+      box-shadow: 0 8px 28px rgba(67,217,176,.18);
+    }
+    h1 { margin: 0; font-size: clamp(23px, 5vw, 31px); letter-spacing: -.6px; }
+    .subtitle { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .statusbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      background: rgba(18,29,48,.82); border: 1px solid var(--line); border-radius: 15px;
+      padding: 13px 15px; margin-bottom: 18px;
+    }
+    .status { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 650; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 12px rgba(255,180,95,.45); }
+    .status-note, .updated { color: var(--muted); font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .card {
+      background: linear-gradient(155deg, rgba(23,36,58,.96), rgba(18,29,48,.96));
+      border: 1px solid var(--line); border-radius: 18px; padding: 17px; min-height: 132px;
+    }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .label { color: var(--muted); font-size: 13px; font-weight: 600; }
+    .icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; font-size: 17px; }
+    .v .icon { color: var(--blue); background: rgba(99,169,255,.13); }
+    .a .icon { color: var(--accent); background: rgba(67,217,176,.13); }
+    .w .icon { color: var(--orange); background: rgba(255,180,95,.13); }
+    .kwh .icon { color: var(--purple); background: rgba(181,154,255,.13); }
+    .hz .icon { color: #7ce0ef; background: rgba(124,224,239,.13); }
+    .pf .icon { color: #ff91cf; background: rgba(255,145,207,.13); }
+    .value { font-size: clamp(26px, 6vw, 34px); font-weight: 750; letter-spacing: -1px; margin-top: 15px; }
+    .unit { font-size: 14px; font-weight: 600; color: var(--muted); letter-spacing: 0; margin-left: 4px; }
+    .section {
+      background: rgba(18,29,48,.82); border: 1px solid var(--line); border-radius: 18px;
+      padding: 17px; margin-top: 14px;
+    }
+    .section-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    h2 { font-size: 16px; margin: 0; }
+    .pill { color: var(--muted); background: var(--panel2); padding: 6px 9px; border-radius: 9px; font-size: 11px; }
+    .empty-chart {
+      height: 150px; margin-top: 15px; border: 1px dashed rgba(255,255,255,.15); border-radius: 12px;
+      display: grid; place-items: center; text-align: center; padding: 18px; color: var(--muted); font-size: 13px;
+      line-height: 1.6;
+    }
+    .history-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 17px; }
+    button {
+      border: 0; border-radius: 11px; padding: 11px 14px; font: inherit; font-size: 13px; font-weight: 700;
+      cursor: pointer; color: #071522; background: var(--accent);
+    }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .reset { color: #ffd5da; background: rgba(255,107,122,.13); border: 1px solid rgba(255,107,122,.28); }
+    .foot { text-align: center; color: #72839c; font-size: 11px; margin-top: 22px; line-height: 1.6; }
+    @media (min-width: 640px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } .card { min-height: 145px; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="logo">ϟ</div>
+      <div>
+        <h1>Smart Energy Meter</h1>
+        <p class="subtitle">Live electrical monitoring dashboard</p>
+      </div>
+    </header>
+
+    <div class="statusbar">
+      <div>
+        <div class="status"><span class="dot"></span><span id="connectionText">Waiting for ESP32 connection</span></div>
+        <div class="status-note" style="margin:6px 0 0 18px">PZEM-004T V4.0 · ESP32</div>
+      </div>
+      <div class="updated" id="updatedText">No live readings received yet</div>
+    </div>
+
+    <section class="grid" aria-label="Live readings">
+      <article class="card v">
+        <div class="card-top"><span class="label">Voltage</span><span class="icon">ϟ</span></div>
+        <div class="value">-- <span class="unit">V</span></div>
+      </article>
+      <article class="card a">
+        <div class="card-top"><span class="label">Current</span><span class="icon">↯</span></div>
+        <div class="value">-- <span class="unit">A</span></div>
+      </article>
+      <article class="card w">
+        <div class="card-top"><span class="label">Power</span><span class="icon">⚡</span></div>
+        <div class="value">-- <span class="unit">W</span></div>
+      </article>
+      <article class="card kwh">
+        <div class="card-top"><span class="label">Energy</span><span class="icon">▥</span></div>
+        <div class="value">-- <span class="unit">kWh</span></div>
+      </article>
+      <article class="card hz">
+        <div class="card-top"><span class="label">Frequency</span><span class="icon">〰</span></div>
+        <div class="value">-- <span class="unit">Hz</span></div>
+      </article>
+      <article class="card pf">
+        <div class="card-top"><span class="label">Power Factor</span><span class="icon">φ</span></div>
+        <div class="value">-- <span class="unit">PF</span></div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Energy History</h2>
+        <span class="pill">Last 7 days · planned</span>
+      </div>
+      <div class="empty-chart">
+        <div><strong>History will appear here</strong><br>Connect the ESP32 to the cloud database to start collecting real readings.<br>No sample values are being shown.</div>
+      </div>
+      <div class="history-row">
+        <div>
+          <div style="font-weight:700;font-size:13px">History controls</div>
+          <div class="status-note" style="margin-top:4px">Reset will be enabled after secure cloud storage is connected.</div>
+        </div>
+        <button class="reset" disabled title="Available after cloud storage is connected">Reset history</button>
+      </div>
+    </section>
+
+    <p class="foot">Smart Energy Meter · ESP32 + PZEM-004T V4.0<br>Dashboard preview — live data is not connected yet.</p>
+  </main>
+</body>
+</html>
