@@ -114,37 +114,50 @@ footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
   </div>
 
   <div class="grid">
-    <div class="metric">
-      <div class="metric-label">Voltage</div>
-      <div class="metric-value" id="voltage">--</div>
-      <div class="metric-unit">Volts (V)</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Current</div>
-      <div class="metric-value" id="current">--</div>
-      <div class="metric-unit">Amperes (A)</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Power</div>
-      <div class="metric-value" id="power">--</div>
-      <div class="metric-unit">Watts (W)</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Energy</div>
-      <div class="metric-value" id="energy">--</div>
-      <div class="metric-unit">Kilowatt-hours (kWh)</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Frequency</div>
-      <div class="metric-value" id="frequency">--</div>
-      <div class="metric-unit">Hertz (Hz)</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Power Factor</div>
-      <div class="metric-value" id="pf">--</div>
-      <div class="metric-unit">PF</div>
-    </div>
+
+  <!-- 1. ENERGY -->
+  <div class="metric">
+    <div class="metric-label">Energy</div>
+    <div class="metric-value" id="energy">--</div>
+    <div class="metric-unit">Kilowatt-hours (kWh)</div>
   </div>
+
+  <!-- 2. VOLTAGE -->
+  <div class="metric">
+    <div class="metric-label">Voltage</div>
+    <div class="metric-value" id="voltage">--</div>
+    <div class="metric-unit">Volts (V)</div>
+  </div>
+
+  <!-- 3. CURRENT -->
+  <div class="metric">
+    <div class="metric-label">Current</div>
+    <div class="metric-value" id="current">--</div>
+    <div class="metric-unit">Amperes (A)</div>
+  </div>
+
+  <!-- 4. POWER -->
+  <div class="metric">
+    <div class="metric-label">Power</div>
+    <div class="metric-value" id="power">--</div>
+    <div class="metric-unit">Watts (W)</div>
+  </div>
+
+  <!-- 5. FREQUENCY -->
+  <div class="metric">
+    <div class="metric-label">Frequency</div>
+    <div class="metric-value" id="frequency">--</div>
+    <div class="metric-unit">Hertz (Hz)</div>
+  </div>
+
+  <!-- 6. POWER FACTOR -->
+  <div class="metric">
+    <div class="metric-label">Power Factor</div>
+    <div class="metric-value" id="pf">--</div>
+    <div class="metric-unit">PF</div>
+  </div>
+
+</div>
   <p class="message" id="liveMessage">Connecting to Firebase...</p>
 </section>
 
