@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,161 +7,85 @@
 
 <style>
 :root {
-  --bg:#0b1020;
-  --panel:#141c30;
-  --border:#28344c;
-  --text:#f1f5ff;
-  --muted:#9ba9c3;
-  --accent:#7c6cff;
-  --green:#36d399;
-  --red:#ff667a;
+  --bg:#0b1020; --panel:#141c30; --border:#28344c;
+  --text:#f1f5ff; --muted:#9ba9c3; --accent:#7c6cff;
+  --green:#36d399; --red:#ff667a;
 }
 * { box-sizing:border-box; }
 body {
-  margin:0;
-  padding:24px;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,sans-serif;
+  margin:0; padding:24px; background:var(--bg);
+  color:var(--text); font-family:Arial,sans-serif;
 }
 .container { max-width:1100px; margin:auto; }
-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-bottom:26px;
+header,.section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:12px;
 }
+header { margin-bottom:26px; }
 h1 { margin:0; font-size:28px; }
 h1 span { color:var(--accent); }
 h2 { margin:0; font-size:20px; }
 p { line-height:1.5; }
 .muted { color:var(--muted); font-size:14px; }
 .pill {
-  display:inline-block;
-  padding:7px 12px;
-  border:1px solid var(--border);
-  border-radius:30px;
-  font-size:13px;
-  color:var(--muted);
+  display:inline-block; padding:7px 12px;
+  border:1px solid var(--border); border-radius:30px;
+  font-size:13px; color:var(--muted);
 }
 .section {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:20px;
-}
-.section-head {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:16px; padding:20px; margin-bottom:20px;
 }
 .grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
-  gap:14px;
-  margin-top:18px;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+  gap:14px; margin-top:18px;
 }
 .metric {
-  padding:18px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:#0e1629;
-  min-width:0;
+  padding:18px; border-radius:12px;
+  border:1px solid var(--border); background:#0e1629; min-width:0;
 }
 .metric-label { color:var(--muted); font-size:14px; }
 .metric-value {
-  font-size:27px;
-  font-weight:bold;
-  margin-top:12px;
+  font-size:27px; font-weight:bold; margin-top:12px;
   overflow-wrap:anywhere;
 }
 .metric-unit { font-size:13px; color:var(--muted); }
 .fields {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:12px;
-  margin-top:18px;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px; margin-top:18px;
 }
 input {
-  width:100%;
-  padding:13px;
-  background:#0b1020;
-  color:var(--text);
-  border:1px solid var(--border);
-  border-radius:9px;
-  font-size:16px;
-  min-width:0;
+  width:100%; padding:13px; background:#0b1020; color:var(--text);
+  border:1px solid var(--border); border-radius:9px;
+  font-size:16px; min-width:0;
 }
 button {
-  border:0;
-  border-radius:9px;
-  padding:12px 17px;
-  background:var(--accent);
-  color:white;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:bold;
-  min-height:44px;
+  border:0; border-radius:9px; padding:12px 17px;
+  background:var(--accent); color:white; cursor:pointer;
+  font-size:14px; font-weight:bold; min-height:44px;
 }
 button.secondary { background:#28344c; }
 button:disabled { opacity:.45; cursor:not-allowed; }
-.actions {
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:14px;
-}
-.message {
-  font-size:14px;
-  color:var(--muted);
-  overflow-wrap:anywhere;
-}
+.actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+.message { font-size:14px; color:var(--muted); overflow-wrap:anywhere; }
 .good { color:var(--green); }
 .bad { color:var(--red); }
 [hidden] { display:none !important; }
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
-}
-table th, table td {
-  padding:11px;
-  border-bottom:1px solid var(--border);
-  text-align:left;
-  white-space:nowrap;
-  font-size:13px;
+hr { border-color:var(--border); margin:22px 0; }
+table { width:100%; border-collapse:collapse; min-width:700px; }
+table th,table td {
+  padding:11px; border-bottom:1px solid var(--border);
+  text-align:left; white-space:nowrap; font-size:13px;
 }
 table th { color:var(--accent); }
 .table-wrap { overflow-x:auto; margin-top:12px; }
-
 .chart-box {
-  margin-top:20px;
-  padding:15px;
-  background:#0e1629;
-  border:1px solid var(--border);
-  border-radius:12px;
+  margin-top:20px; padding:15px; background:#0e1629;
+  border:1px solid var(--border); border-radius:12px;
 }
-.chart-box h3 {
-  margin:0 0 12px;
-  font-size:16px;
-}
-.chart {
-  display:block;
-  width:100%;
-  height:220px;
-}
-footer {
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  padding:10px;
-}
+.chart-box h3 { margin:0 0 12px; font-size:16px; }
+.chart { display:block; width:100%; height:220px; }
+footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
 @media(max-width:500px) {
   body { padding:14px; }
   h1 { font-size:23px; }
@@ -222,10 +145,7 @@ footer {
       <div class="metric-unit">PF</div>
     </div>
   </div>
-
-  <p class="message" id="liveMessage" aria-live="polite">
-    Connecting to Firebase...
-  </p>
+  <p class="message" id="liveMessage">Connecting to Firebase...</p>
 </section>
 
 <!-- ENERGY HISTORY -->
@@ -251,24 +171,20 @@ footer {
     </div>
   </div>
 
-  <!-- FOUR GRAPHS -->
   <h2 style="margin-top:26px">📈 Energy Analysis Graphs</h2>
 
   <div class="chart-box">
     <h3>Voltage History (V)</h3>
     <canvas class="chart" id="voltageChart"></canvas>
   </div>
-
   <div class="chart-box">
     <h3>Current History (A)</h3>
     <canvas class="chart" id="currentChart"></canvas>
   </div>
-
   <div class="chart-box">
     <h3>Power History (W)</h3>
     <canvas class="chart" id="powerChart"></canvas>
   </div>
-
   <div class="chart-box">
     <h3>Energy Consumption (kWh per interval)</h3>
     <canvas class="chart" id="energyChart"></canvas>
@@ -281,18 +197,13 @@ footer {
   </p>
 
   <h2 style="margin-top:24px">History Records</h2>
-
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th>Date & Time</th>
-          <th>Voltage (V)</th>
-          <th>Current (A)</th>
-          <th>Power (W)</th>
-          <th>Energy (kWh)</th>
-          <th>Frequency (Hz)</th>
-          <th>PF</th>
+          <th>Date & Time</th><th>Voltage (V)</th>
+          <th>Current (A)</th><th>Power (W)</th>
+          <th>Energy (kWh)</th><th>Frequency (Hz)</th><th>PF</th>
         </tr>
       </thead>
       <tbody id="historyTable">
@@ -302,68 +213,107 @@ footer {
   </div>
 
   <div class="actions">
-    <button id="resetHistoryBtn" type="button" disabled>
-      Reset History
-    </button>
+    <button id="resetHistoryBtn" type="button" disabled>Reset History</button>
   </div>
-
-  <p id="historyMessage" class="message" aria-live="polite">
-    History will appear here.
-  </p>
+  <p id="historyMessage" class="message">History will appear here.</p>
 </section>
 
-<!-- ADMIN LOGIN AT BOTTOM -->
+<!-- ADMIN LOGIN -->
 <section class="section" id="adminSection">
   <div class="section-head">
     <h2>🔐 Admin Login</h2>
     <span class="pill" id="adminStatus">Not logged in</span>
   </div>
 
-  <p class="muted">
-    Sign in using your configured Firebase admin account.
-  </p>
+  <p class="muted">Sign in using your configured Firebase admin account.</p>
 
   <form id="loginForm">
     <div class="fields">
-      <input id="adminEmail" type="email"
-        placeholder="Admin email" autocomplete="username" required>
-      <input id="adminPassword" type="password"
-        placeholder="Password" autocomplete="current-password" required>
+      <input id="adminEmail" type="email" placeholder="Admin email"
+        autocomplete="username" required>
+      <input id="adminPassword" type="password" placeholder="Password"
+        autocomplete="current-password" required>
     </div>
-
     <div class="actions">
       <button id="loginBtn" type="submit">Login</button>
       <button id="logoutBtn" class="secondary" type="button" hidden>Logout</button>
-      <button id="forgotBtn" class="secondary" type="button">Forgot Password</button>
     </div>
   </form>
 
-  <p id="authMessage" class="message" aria-live="polite">
-    Sign in with your admin account.
-  </p>
+  <p id="authMessage" class="message">Sign in with your admin account.</p>
 
-  <div id="changePasswordPanel" hidden>
-    <hr style="border-color:var(--border);margin:22px 0">
-    <h2>Change Password</h2>
+  <!-- PASSWORD OPTIONS: ADMIN ONLY -->
+  <div id="passwordAccess" hidden>
+    <hr>
+    <button id="passwordToggleBtn" class="secondary" type="button">
+      Change Password
+    </button>
 
-    <form id="passwordForm">
+    <div id="changePasswordPanel" hidden>
+      <hr>
+      <h2>Change Password</h2>
+      <p class="muted">Choose one of the following methods.</p>
+
+      <h3>Option 1: Change using old password</h3>
+      <form id="passwordForm">
+        <div class="fields">
+          <input id="currentPassword" type="password"
+            placeholder="Old Password" autocomplete="current-password" required>
+          <input id="newPassword" type="password"
+            placeholder="New Password (minimum 6 characters)"
+            autocomplete="new-password" minlength="6" required>
+          <input id="confirmPassword" type="password"
+            placeholder="Confirm New Password"
+            autocomplete="new-password" minlength="6" required>
+        </div>
+        <div class="actions">
+          <button id="changePasswordBtn" type="submit">Update Password</button>
+        </div>
+      </form>
+      <p id="passwordMessage" class="message" aria-live="polite"></p>
+
+      <hr>
+      <h3>Option 2: Reset using email</h3>
+      <p class="muted">
+        A password reset link will be sent to your registered admin email.
+      </p>
+      <button id="emailResetBtn" class="secondary" type="button">
+        Send Password Reset Link
+      </button>
+      <p id="emailResetMessage" class="message" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <!-- WIFI SETTINGS: ADMIN ONLY -->
+  <div id="wifiSettingsCard" hidden>
+    <hr>
+    <h2>📶 ESP32 Wi-Fi / Hotspot Settings</h2>
+    <p class="muted">
+      Enter the new hotspot details. ESP32 must be connected to its
+      existing Wi-Fi to receive these settings.
+    </p>
+
+    <form id="wifiForm">
       <div class="fields">
-        <input id="currentPassword" type="password"
-          placeholder="Current password" autocomplete="current-password" required>
-        <input id="newPassword" type="password"
-          placeholder="New password (at least 6 characters)"
-          autocomplete="new-password" minlength="6" required>
-        <input id="confirmPassword" type="password"
-          placeholder="Confirm new password"
-          autocomplete="new-password" minlength="6" required>
+        <input id="wifiSSID" type="text"
+          placeholder="New Hotspot Name (SSID)" autocomplete="off" required>
+        <input id="wifiPassword" type="password"
+          placeholder="New Hotspot Password" autocomplete="new-password" required>
       </div>
+
+      <label style="display:block;margin-top:12px;color:var(--muted)">
+        <input type="checkbox" id="showWifiPassword"
+          style="width:auto;vertical-align:middle">
+        Show password
+      </label>
 
       <div class="actions">
-        <button id="changePasswordBtn" type="submit">Change Password</button>
+        <button id="saveWifiButton" type="submit">Save Wi-Fi Settings</button>
       </div>
     </form>
-
-    <p id="passwordMessage" class="message" aria-live="polite"></p>
+    <p id="wifiStatus" class="message" aria-live="polite">
+      Admin login required.
+    </p>
   </div>
 </section>
 
@@ -381,23 +331,14 @@ import { initializeApp } from
 "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 
 import {
-  getDatabase,
-  ref,
-  onValue,
-  get,
-  remove
+  getDatabase, ref, onValue, get, remove, set, serverTimestamp
 } from
 "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
 
 import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-  updatePassword,
-  reauthenticateWithCredential,
-  EmailAuthProvider
+  getAuth, signInWithEmailAndPassword, signOut,
+  sendPasswordResetEmail, onAuthStateChanged,
+  updatePassword, reauthenticateWithCredential, EmailAuthProvider
 } from
 "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
@@ -424,6 +365,7 @@ const $ = (id) => document.getElementById(id);
 
 const liveRef = ref(db, "energyMeter");
 const historyRef = ref(db, "energy_history");
+const wifiConfigRef = ref(db, "wifi_config");
 
 
 // ===== MESSAGE FUNCTIONS =====
@@ -469,7 +411,6 @@ function friendlyError(error) {
 // ===== LIVE ENERGY MONITORING =====
 
 onValue(liveRef, (snapshot) => {
-
   const data = snapshot.val();
 
   if (!data) {
@@ -481,12 +422,9 @@ onValue(liveRef, (snapshot) => {
 
   const display = (id, value, digits = 2) => {
     const number = Number(value);
-
     $(id).textContent =
       value === undefined || value === null || value === "" ||
-      !Number.isFinite(number)
-        ? "--"
-        : number.toFixed(digits);
+      !Number.isFinite(number) ? "--" : number.toFixed(digits);
   };
 
   display("voltage", data.voltage);
@@ -501,7 +439,6 @@ onValue(liveRef, (snapshot) => {
 
   if (data.lastUpdate) {
     const date = new Date(Number(data.lastUpdate));
-
     $("updatedText").textContent =
       "Updated: " + (
         Number.isNaN(date.getTime())
@@ -512,17 +449,13 @@ onValue(liveRef, (snapshot) => {
     $("updatedText").textContent = "Data received";
   }
 
-  $("liveMessage").textContent =
-    "Live meter data received successfully.";
+  $("liveMessage").textContent = "Live meter data received successfully.";
   $("liveMessage").className = "message good";
 
 }, (error) => {
-
   $("connectionText").textContent = "Connection error";
   $("connectionText").style.color = "var(--red)";
-
-  $("liveMessage").textContent =
-    "Firebase read failed: " + error.message;
+  $("liveMessage").textContent = "Firebase read failed: " + error.message;
   $("liveMessage").className = "message bad";
 });
 
@@ -530,7 +463,6 @@ onValue(liveRef, (snapshot) => {
 // ===== ADMIN LOGIN =====
 
 $("loginForm").addEventListener("submit", async (event) => {
-
   event.preventDefault();
   $("loginBtn").disabled = true;
   showAuthMessage("Signing in...");
@@ -538,10 +470,8 @@ $("loginForm").addEventListener("submit", async (event) => {
   try {
     const email = $("adminEmail").value.trim();
     const password = $("adminPassword").value;
-
     await signInWithEmailAndPassword(auth, email, password);
     $("adminPassword").value = "";
-
   } catch (error) {
     showAuthMessage(friendlyError(error), "bad");
   } finally {
@@ -553,9 +483,9 @@ $("loginForm").addEventListener("submit", async (event) => {
 // ===== ADMIN LOGOUT =====
 
 $("logoutBtn").addEventListener("click", async () => {
-
   try {
     await signOut(auth);
+    $("changePasswordPanel").hidden = true;
     showAuthMessage("You have logged out.", "good");
   } catch (error) {
     showAuthMessage(friendlyError(error), "bad");
@@ -563,28 +493,43 @@ $("logoutBtn").addEventListener("click", async () => {
 });
 
 
-// ===== FORGOT PASSWORD =====
+// ===== PASSWORD PANEL OPEN / CLOSE =====
 
-$("forgotBtn").addEventListener("click", async () => {
+$("passwordToggleBtn").addEventListener("click", () => {
+  const panel = $("changePasswordPanel");
+  panel.hidden = !panel.hidden;
 
-  const email = $("adminEmail").value.trim();
+  $("passwordToggleBtn").textContent =
+    panel.hidden ? "Change Password" : "Close Password Options";
+});
 
-  if (!email) {
-    showAuthMessage("Enter your admin email first.", "bad");
-    $("adminEmail").focus();
+
+// ===== EMAIL PASSWORD RESET =====
+
+$("emailResetBtn").addEventListener("click", async () => {
+  const user = auth.currentUser;
+
+  if (!user || user.uid !== ADMIN_UID) {
+    $("emailResetMessage").textContent = "Admin login required.";
+    $("emailResetMessage").className = "message bad";
     return;
   }
 
-  try {
-    await sendPasswordResetEmail(auth, email);
+  $("emailResetBtn").disabled = true;
+  $("emailResetMessage").textContent = "Sending reset link...";
 
-    showAuthMessage(
-      "If the account exists, a password-reset email has been sent. Check your inbox and spam folder.",
-      "good"
-    );
+  try {
+    await sendPasswordResetEmail(auth, user.email);
+
+    $("emailResetMessage").textContent =
+      "Password reset link sent to your registered email. Check inbox and spam folder.";
+    $("emailResetMessage").className = "message good";
 
   } catch (error) {
-    showAuthMessage(friendlyError(error), "bad");
+    $("emailResetMessage").textContent = friendlyError(error);
+    $("emailResetMessage").className = "message bad";
+  } finally {
+    $("emailResetBtn").disabled = false;
   }
 });
 
@@ -592,26 +537,17 @@ $("forgotBtn").addEventListener("click", async () => {
 // ===== HISTORY DISPLAY =====
 
 function renderHistory(records) {
-
   const entries = Object.entries(records || {})
-    .filter(([id, item]) =>
-      item &&
-      Number.isFinite(Number(item.timestamp))
-    )
-    .sort((a, b) =>
-      Number(a[1].timestamp) - Number(b[1].timestamp)
-    );
+    .filter(([id, item]) => item && Number.isFinite(Number(item.timestamp)))
+    .sort((a, b) => Number(a[1].timestamp) - Number(b[1].timestamp));
 
   $("historyCount").textContent = entries.length;
 
   if (entries.length === 0) {
-
     $("historyEnergy").textContent = "--";
     $("historyTable").innerHTML =
       '<tr><td colspan="7">No history records found.</td></tr>';
-
     $("historyStatus").textContent = "No records";
-
     drawAllCharts([]);
     return;
   }
@@ -619,18 +555,13 @@ function renderHistory(records) {
   $("historyStatus").textContent = "History loaded";
 
   const latest = entries[entries.length - 1][1];
+  $("historyEnergy").textContent = Number(latest.energy ?? 0).toFixed(3);
 
-  $("historyEnergy").textContent =
-    Number(latest.energy ?? 0).toFixed(3);
-
-  // Latest 100 records in reverse chronological order
   const tbody = $("historyTable");
   tbody.replaceChildren();
 
   entries.slice(-100).reverse().forEach(([id, item]) => {
-
     const row = document.createElement("tr");
-
     const date = new Date(Number(item.timestamp));
 
     const values = [
@@ -656,20 +587,17 @@ function renderHistory(records) {
 }
 
 
-// ===== GENERIC GRAPH DRAWER =====
+// ===== GRAPH DRAWER =====
 
 function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
-
   const canvas = $(canvasId);
   const ctx = canvas.getContext("2d");
-
   const width = canvas.clientWidth || 600;
   const height = 220;
   const ratio = window.devicePixelRatio || 1;
 
   canvas.width = width * ratio;
   canvas.height = height * ratio;
-
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
   ctx.clearRect(0, 0, width, height);
 
@@ -681,38 +609,25 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   }
 
   let points = entries.map((entry, index) => {
-
     const item = entry[1];
     let value = Number(item[field]);
 
     if (!Number.isFinite(value)) value = 0;
 
-    // Calculate interval consumption from cumulative energy
     if (intervalEnergy) {
-      if (index === 0) {
-        return null;
-      }
+      if (index === 0) return null;
 
       const previousEnergy = Number(entries[index - 1][1].energy);
       const currentEnergy = Number(item.energy);
 
-      if (
-        !Number.isFinite(previousEnergy) ||
-        !Number.isFinite(currentEnergy)
-      ) {
-        return null;
-      }
+      if (!Number.isFinite(previousEnergy) ||
+          !Number.isFinite(currentEnergy)) return null;
 
       value = currentEnergy - previousEnergy;
-
-      // Ignore negative differences caused by meter reset
       if (value < 0) return null;
     }
 
-    return {
-      value,
-      timestamp: Number(item.timestamp)
-    };
+    return { value, timestamp: Number(item.timestamp) };
   }).filter(point => point !== null);
 
   if (!points.length) {
@@ -725,27 +640,22 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   const values = points.map(point => point.value);
   const max = Math.max(...values, 0);
   const min = Math.min(...values, 0);
-
   const padding = 35;
   const graphWidth = width - padding * 2;
   const graphHeight = height - padding * 2;
-
   const range = max - min || 1;
 
-  // Grid
   ctx.strokeStyle = "#28344c";
   ctx.lineWidth = 1;
 
   for (let i = 0; i <= 4; i++) {
     const y = padding + graphHeight * i / 4;
-
     ctx.beginPath();
     ctx.moveTo(padding, y);
     ctx.lineTo(width - padding, y);
     ctx.stroke();
   }
 
-  // Y-axis labels
   ctx.fillStyle = "#9ba9c3";
   ctx.font = "10px Arial";
 
@@ -754,40 +664,28 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
     ctx.fillText(value.toFixed(2), 3, padding + graphHeight * i / 4 + 4);
   }
 
-  // Data line
   ctx.strokeStyle = "#7c6cff";
   ctx.lineWidth = 2;
   ctx.beginPath();
 
   points.forEach((point, index) => {
-
-    const x = padding +
-      (points.length === 1
-        ? graphWidth / 2
-        : index * graphWidth / (points.length - 1));
-
+    const x = padding + (points.length === 1
+      ? graphWidth / 2
+      : index * graphWidth / (points.length - 1));
     const y = height - padding -
       ((point.value - min) / range) * graphHeight;
 
-    if (index === 0) {
-      ctx.moveTo(x, y);
-    } else {
-      ctx.lineTo(x, y);
-    }
+    if (index === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
   });
 
   ctx.stroke();
-
-  // Points
   ctx.fillStyle = "#36d399";
 
   points.forEach((point, index) => {
-
-    const x = padding +
-      (points.length === 1
-        ? graphWidth / 2
-        : index * graphWidth / (points.length - 1));
-
+    const x = padding + (points.length === 1
+      ? graphWidth / 2
+      : index * graphWidth / (points.length - 1));
     const y = height - padding -
       ((point.value - min) / range) * graphHeight;
 
@@ -799,121 +697,69 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   ctx.fillStyle = "#9ba9c3";
   ctx.font = "11px Arial";
   ctx.fillText(label, padding, 15);
-
   ctx.fillText("Oldest", padding, height - 8);
   ctx.fillText("Latest", width - padding - 35, height - 8);
 }
 
 
-// ===== DRAW ALL FOUR GRAPHS =====
+// ===== DRAW ALL GRAPHS =====
 
 function drawAllCharts(entries) {
-
+  drawChart("voltageChart", entries, "voltage", "Voltage (V)");
+  drawChart("currentChart", entries, "current", "Current (A)");
+  drawChart("powerChart", entries, "power", "Power (W)");
   drawChart(
-    "voltageChart",
-    entries,
-    "voltage",
-    "Voltage (V)"
-  );
-
-  drawChart(
-    "currentChart",
-    entries,
-    "current",
-    "Current (A)"
-  );
-
-  drawChart(
-    "powerChart",
-    entries,
-    "power",
-    "Power (W)"
-  );
-
-  drawChart(
-    "energyChart",
-    entries,
-    "energy",
-    "Energy consumed per interval (kWh)",
-    true
+    "energyChart", entries, "energy",
+    "Energy consumed per interval (kWh)", true
   );
 }
 
 
-// ===== LOAD HISTORY FROM FIREBASE =====
+// ===== LOAD HISTORY =====
 
 onValue(historyRef, (snapshot) => {
-
   renderHistory(snapshot.val());
-
-  showHistoryMessage(
-    "History synchronized with Firebase.",
-    "good"
-  );
-
+  showHistoryMessage("History synchronized with Firebase.", "good");
 }, (error) => {
-
   $("historyStatus").textContent = "Read error";
-
-  showHistoryMessage(
-    "History read failed: " + error.message,
-    "bad"
-  );
+  showHistoryMessage("History read failed: " + error.message, "bad");
 });
 
 
-// ===== DELETE HISTORY OLDER THAN 7 DAYS =====
+// ===== 7-DAY CLEANUP =====
 
 async function cleanOldHistory() {
-
   const user = auth.currentUser;
-
   if (!user || user.uid !== ADMIN_UID) return;
 
   try {
-
     const snapshot = await get(historyRef);
     const records = snapshot.val() || {};
-
-    const sevenDaysAgo = Date.now() -
-      (7 * 24 * 60 * 60 * 1000);
-
+    const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
     const deletions = [];
 
     for (const [id, item] of Object.entries(records)) {
-
       if (
         item &&
         Number.isFinite(Number(item.timestamp)) &&
         Number(item.timestamp) < sevenDaysAgo
       ) {
-        deletions.push(
-          remove(ref(db, "energy_history/" + id))
-        );
+        deletions.push(remove(ref(db, "energy_history/" + id)));
       }
     }
 
     await Promise.all(deletions);
-
-    showHistoryMessage(
-      "7-day cleanup completed successfully.",
-      "good"
-    );
+    showHistoryMessage("7-day cleanup completed successfully.", "good");
 
   } catch (error) {
-
-    showHistoryMessage(
-      "History cleanup failed: " + error.message,
-      "bad"
-    );
+    showHistoryMessage("History cleanup failed: " + error.message, "bad");
   }
 }
 
 
-// ===== RESET HISTORY (ADMIN ONLY) =====
+// ===== RESET HISTORY =====
 
 $("resetHistoryBtn").addEventListener("click", async () => {
-
   const user = auth.currentUser;
 
   if (!user || user.uid !== ADMIN_UID) {
@@ -930,23 +776,11 @@ $("resetHistoryBtn").addEventListener("click", async () => {
   $("resetHistoryBtn").disabled = true;
 
   try {
-
     await remove(historyRef);
-
-    showHistoryMessage(
-      "All history records deleted successfully.",
-      "good"
-    );
-
+    showHistoryMessage("All history records deleted successfully.", "good");
   } catch (error) {
-
-    showHistoryMessage(
-      "Reset failed: " + error.message,
-      "bad"
-    );
-
+    showHistoryMessage("Reset failed: " + error.message, "bad");
   } finally {
-
     $("resetHistoryBtn").disabled = false;
   }
 });
@@ -955,24 +789,16 @@ $("resetHistoryBtn").addEventListener("click", async () => {
 // ===== ADMIN AUTH STATE =====
 
 onAuthStateChanged(auth, async (user) => {
-
   if (user && user.uid !== ADMIN_UID) {
-
     showAuthMessage(
-      "This account is not authorized as the dashboard admin.",
-      "bad"
+      "This account is not authorized as the dashboard admin.", "bad"
     );
 
-    try {
-      await signOut(auth);
-    } catch {}
-
+    try { await signOut(auth); } catch {}
     return;
   }
 
-  const loggedIn = Boolean(
-    user && user.uid === ADMIN_UID
-  );
+  const loggedIn = Boolean(user && user.uid === ADMIN_UID);
 
   $("adminStatus").textContent =
     loggedIn ? "Admin logged in" : "Not logged in";
@@ -982,110 +808,147 @@ onAuthStateChanged(auth, async (user) => {
 
   $("loginBtn").hidden = loggedIn;
   $("logoutBtn").hidden = !loggedIn;
-
   $("adminEmail").disabled = loggedIn;
   $("adminPassword").hidden = loggedIn;
-  $("forgotBtn").hidden = loggedIn;
 
-  $("changePasswordPanel").hidden = !loggedIn;
+  // Both settings are visible only to admin
+  $("passwordAccess").hidden = !loggedIn;
+  $("wifiSettingsCard").hidden = !loggedIn;
+
+  if (!loggedIn) {
+    $("changePasswordPanel").hidden = true;
+    $("passwordToggleBtn").textContent = "Change Password";
+    $("wifiForm").reset();
+    $("passwordForm").reset();
+  }
 
   $("resetHistoryBtn").disabled = !loggedIn;
 
   if (loggedIn) {
-
     $("adminEmail").value = user.email || "";
-
-    showAuthMessage(
-      "Admin authenticated successfully.",
-      "good"
-    );
-
+    showAuthMessage("Admin authenticated successfully.", "good");
     await cleanOldHistory();
   }
 });
 
 
-// ===== CHANGE PASSWORD =====
+// ===== CHANGE PASSWORD USING OLD PASSWORD =====
 
 $("passwordForm").addEventListener("submit", async (event) => {
-
   event.preventDefault();
 
   const user = auth.currentUser;
-
-  const currentPassword =
-    $("currentPassword").value;
-
-  const newPassword =
-    $("newPassword").value;
-
-  const confirmPassword =
-    $("confirmPassword").value;
+  const currentPassword = $("currentPassword").value;
+  const newPassword = $("newPassword").value;
+  const confirmPassword = $("confirmPassword").value;
 
   if (!user || user.uid !== ADMIN_UID) {
-    showPasswordMessage(
-      "Please log in with the admin account first.",
-      "bad"
-    );
+    showPasswordMessage("Please log in with the admin account first.", "bad");
     return;
   }
 
   if (newPassword.length < 6) {
     showPasswordMessage(
-      "New password must be at least 6 characters.",
-      "bad"
+      "New password must be at least 6 characters.", "bad"
     );
     return;
   }
 
   if (newPassword !== confirmPassword) {
-    showPasswordMessage(
-      "New passwords do not match.",
-      "bad"
-    );
+    showPasswordMessage("New passwords do not match.", "bad");
     return;
   }
 
   if (newPassword === currentPassword) {
     showPasswordMessage(
-      "Choose a password different from the current one.",
-      "bad"
+      "Choose a password different from the current one.", "bad"
     );
     return;
   }
 
   $("changePasswordBtn").disabled = true;
-
-  showPasswordMessage("Verifying current password...");
+  showPasswordMessage("Verifying old password...");
 
   try {
-
     const credential = EmailAuthProvider.credential(
-      user.email,
-      currentPassword
+      user.email, currentPassword
     );
 
     await reauthenticateWithCredential(user, credential);
-
     await updatePassword(user, newPassword);
 
     $("passwordForm").reset();
-
-    showPasswordMessage(
-      "Password changed successfully.",
-      "good"
-    );
+    showPasswordMessage("Password changed successfully.", "good");
 
   } catch (error) {
-
-    showPasswordMessage(
-      friendlyError(error),
-      "bad"
-    );
-
+    showPasswordMessage(friendlyError(error), "bad");
   } finally {
-
     $("changePasswordBtn").disabled = false;
+  }
+});
+
+
+// ===== ADMIN WIFI SETTINGS =====
+
+$("showWifiPassword").addEventListener("change", function () {
+  $("wifiPassword").type = this.checked ? "text" : "password";
+});
+
+$("wifiForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const user = auth.currentUser;
+
+  if (!user || user.uid !== ADMIN_UID) {
+    $("wifiStatus").textContent = "Admin login required.";
+    $("wifiStatus").className = "message bad";
+    return;
+  }
+
+  const ssid = $("wifiSSID").value.trim();
+  const password = $("wifiPassword").value;
+
+  if (!ssid || !password) {
+    $("wifiStatus").textContent =
+      "Enter both Wi-Fi name and password.";
+    $("wifiStatus").className = "message bad";
+    return;
+  }
+
+  if (ssid.length > 32 || password.length > 63) {
+    $("wifiStatus").textContent =
+      "Check SSID (max 32 characters) and password (max 63 characters).";
+    $("wifiStatus").className = "message bad";
+    return;
+  }
+
+  const button = $("saveWifiButton");
+  button.disabled = true;
+  button.textContent = "Saving...";
+
+  $("wifiStatus").textContent = "Saving Wi-Fi settings...";
+
+  try {
+    await set(wifiConfigRef, {
+      ssid: ssid,
+      password: password,
+      updatedAt: serverTimestamp()
+    });
+
+    $("wifiStatus").textContent =
+      "Wi-Fi settings saved! ESP32 will check for updates shortly.";
+    $("wifiStatus").className = "message good";
+
+    $("wifiForm").reset();
+    $("wifiPassword").type = "password";
+
+  } catch (error) {
+    console.error("Wi-Fi settings error:", error);
+    $("wifiStatus").textContent = "Save failed: " + friendlyError(error);
+    $("wifiStatus").className = "message bad";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Save Wi-Fi Settings";
   }
 });
 
@@ -1093,8 +956,12 @@ $("passwordForm").addEventListener("submit", async (event) => {
 // ===== REDRAW GRAPHS ON RESIZE =====
 
 window.addEventListener("resize", async () => {
-  const snapshot = await get(historyRef);
-  renderHistory(snapshot.val());
+  try {
+    const snapshot = await get(historyRef);
+    renderHistory(snapshot.val());
+  } catch (error) {
+    console.error("Graph redraw failed:", error);
+  }
 });
 
 </script>
