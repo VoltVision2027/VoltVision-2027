@@ -254,65 +254,6 @@ footer {
   </p>
 </section>
 
-<!-- ADMIN LOGIN -->
-<section class="section" id="adminSection">
-  <div class="section-head">
-    <h2>🔐 Admin Login</h2>
-    <span class="pill" id="adminStatus">Not logged in</span>
-  </div>
-
-  <p class="muted">
-    Sign in using your configured Firebase admin account.
-  </p>
-
-  <form id="loginForm">
-    <div class="fields">
-      <input id="adminEmail" type="email"
-        placeholder="Admin email" autocomplete="username" required>
-
-      <input id="adminPassword" type="password"
-        placeholder="Password" autocomplete="current-password" required>
-    </div>
-
-    <div class="actions">
-      <button id="loginBtn" type="submit">Login</button>
-      <button id="logoutBtn" class="secondary" type="button" hidden>Logout</button>
-      <button id="forgotBtn" class="secondary" type="button">Forgot Password</button>
-    </div>
-  </form>
-
-  <p id="authMessage" class="message" aria-live="polite">
-    Sign in with your admin account.
-  </p>
-
-  <!-- CHANGE PASSWORD -->
-  <div id="changePasswordPanel" hidden>
-    <hr style="border-color:var(--border);margin:22px 0">
-    <h2>Change Password</h2>
-
-    <form id="passwordForm">
-      <div class="fields">
-        <input id="currentPassword" type="password"
-          placeholder="Current password" autocomplete="current-password" required>
-
-        <input id="newPassword" type="password"
-          placeholder="New password (at least 6 characters)"
-          autocomplete="new-password" minlength="6" required>
-
-        <input id="confirmPassword" type="password"
-          placeholder="Confirm new password"
-          autocomplete="new-password" minlength="6" required>
-      </div>
-
-      <div class="actions">
-        <button id="changePasswordBtn" type="submit">Change Password</button>
-      </div>
-    </form>
-
-    <p id="passwordMessage" class="message" aria-live="polite"></p>
-  </div>
-</section>
-
 <!-- ENERGY HISTORY -->
 <section class="section">
   <div class="section-head">
@@ -371,6 +312,65 @@ footer {
   <p id="historyMessage" class="message" aria-live="polite">
     History will appear here.
   </p>
+</section>
+
+<!-- ADMIN LOGIN - MOVED TO BOTTOM -->
+<section class="section" id="adminSection">
+  <div class="section-head">
+    <h2>🔐 Admin Login</h2>
+    <span class="pill" id="adminStatus">Not logged in</span>
+  </div>
+
+  <p class="muted">
+    Sign in using your configured Firebase admin account.
+  </p>
+
+  <form id="loginForm">
+    <div class="fields">
+      <input id="adminEmail" type="email"
+        placeholder="Admin email" autocomplete="username" required>
+
+      <input id="adminPassword" type="password"
+        placeholder="Password" autocomplete="current-password" required>
+    </div>
+
+    <div class="actions">
+      <button id="loginBtn" type="submit">Login</button>
+      <button id="logoutBtn" class="secondary" type="button" hidden>Logout</button>
+      <button id="forgotBtn" class="secondary" type="button">Forgot Password</button>
+    </div>
+  </form>
+
+  <p id="authMessage" class="message" aria-live="polite">
+    Sign in with your admin account.
+  </p>
+
+  <!-- CHANGE PASSWORD -->
+  <div id="changePasswordPanel" hidden>
+    <hr style="border-color:var(--border);margin:22px 0">
+    <h2>Change Password</h2>
+
+    <form id="passwordForm">
+      <div class="fields">
+        <input id="currentPassword" type="password"
+          placeholder="Current password" autocomplete="current-password" required>
+
+        <input id="newPassword" type="password"
+          placeholder="New password (at least 6 characters)"
+          autocomplete="new-password" minlength="6" required>
+
+        <input id="confirmPassword" type="password"
+          placeholder="Confirm new password"
+          autocomplete="new-password" minlength="6" required>
+      </div>
+
+      <div class="actions">
+        <button id="changePasswordBtn" type="submit">Change Password</button>
+      </div>
+    </form>
+
+    <p id="passwordMessage" class="message" aria-live="polite"></p>
+  </div>
 </section>
 
 <footer>
@@ -637,7 +637,6 @@ function renderHistory(records) {
   $("historyEnergy").textContent =
     Number(entries[0][1].energy ?? 0).toFixed(3);
 
-  // Safely create table rows
   const tbody = $("historyTable");
   tbody.replaceChildren();
 
