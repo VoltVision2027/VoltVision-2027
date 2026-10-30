@@ -160,7 +160,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
     </div>
   </div>
 
-  <!-- Compact Network & System Status Box -->
+  <!-- Compact Network & System Status Box (Hotspot name visible to public users) -->
   <div class="top-card">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <span class="muted" style="font-size:12px;font-weight:700;letter-spacing:0.5px;">SYSTEM & NETWORK STATUS</span>
@@ -168,7 +168,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
     </div>
     <div style="margin-top:10px;display:flex;gap:20px;flex-wrap:wrap;">
       <div>
-        <span class="muted" style="font-size:11px;">HOTSPOT</span>
+        <span class="muted" style="font-size:11px;">CONNECTED HOTSPOT</span>
         <div id="connectedSSID" style="font-size:16px;font-weight:700;color:var(--text)">Loading...</div>
       </div>
       <div>
@@ -483,7 +483,7 @@ onValue(liveRef, (snapshot) => {
   $("liveMessage").className = "message bad";
 });
 
-// Connected Wi-Fi SSID for all users
+// Connected Wi-Fi SSID for all users (No login required to view SSID)
 onValue(wifiConfigRef, (snapshot) => {
   const config = snapshot.val();
   $("connectedSSID").textContent = config && config.ssid ? config.ssid : "Not configured";
