@@ -17,9 +17,7 @@
   --green:#36d399;
   --red:#ff667a;
 }
-
 * { box-sizing:border-box; }
-
 body {
   margin:0;
   padding:24px;
@@ -27,9 +25,7 @@ body {
   color:var(--text);
   font-family:Arial,sans-serif;
 }
-
 .container { max-width:1100px; margin:auto; }
-
 header {
   display:flex;
   align-items:center;
@@ -38,13 +34,11 @@ header {
   gap:12px;
   margin-bottom:26px;
 }
-
 h1 { margin:0; font-size:28px; }
 h1 span { color:var(--accent); }
 h2 { margin:0; font-size:20px; }
 p { line-height:1.5; }
 .muted { color:var(--muted); font-size:14px; }
-
 .pill {
   display:inline-block;
   padding:7px 12px;
@@ -53,7 +47,6 @@ p { line-height:1.5; }
   font-size:13px;
   color:var(--muted);
 }
-
 .section {
   background:var(--panel);
   border:1px solid var(--border);
@@ -61,7 +54,6 @@ p { line-height:1.5; }
   padding:20px;
   margin-bottom:20px;
 }
-
 .section-head {
   display:flex;
   justify-content:space-between;
@@ -69,14 +61,12 @@ p { line-height:1.5; }
   flex-wrap:wrap;
   gap:12px;
 }
-
 .grid {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
   gap:14px;
   margin-top:18px;
 }
-
 .metric {
   padding:18px;
   border-radius:12px;
@@ -84,25 +74,20 @@ p { line-height:1.5; }
   background:#0e1629;
   min-width:0;
 }
-
 .metric-label { color:var(--muted); font-size:14px; }
-
 .metric-value {
   font-size:27px;
   font-weight:bold;
   margin-top:12px;
   overflow-wrap:anywhere;
 }
-
 .metric-unit { font-size:13px; color:var(--muted); }
-
 .fields {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:12px;
   margin-top:18px;
 }
-
 input {
   width:100%;
   padding:13px;
@@ -113,7 +98,6 @@ input {
   font-size:16px;
   min-width:0;
 }
-
 button {
   border:0;
   border-radius:9px;
@@ -125,23 +109,19 @@ button {
   font-weight:bold;
   min-height:44px;
 }
-
 button.secondary { background:#28344c; }
 button:disabled { opacity:.45; cursor:not-allowed; }
-
 .actions {
   display:flex;
   flex-wrap:wrap;
   gap:10px;
   margin-top:14px;
 }
-
 .message {
   font-size:14px;
   color:var(--muted);
   overflow-wrap:anywhere;
 }
-
 .good { color:var(--green); }
 .bad { color:var(--red); }
 [hidden] { display:none !important; }
@@ -151,7 +131,6 @@ table {
   border-collapse:collapse;
   min-width:700px;
 }
-
 table th, table td {
   padding:11px;
   border-bottom:1px solid var(--border);
@@ -159,31 +138,31 @@ table th, table td {
   white-space:nowrap;
   font-size:13px;
 }
-
 table th { color:var(--accent); }
+.table-wrap { overflow-x:auto; margin-top:12px; }
 
-.table-wrap {
-  overflow-x:auto;
-  margin-top:12px;
+.chart-box {
+  margin-top:20px;
+  padding:15px;
+  background:#0e1629;
+  border:1px solid var(--border);
+  border-radius:12px;
 }
-
-#powerChart {
+.chart-box h3 {
+  margin:0 0 12px;
+  font-size:16px;
+}
+.chart {
   display:block;
   width:100%;
   height:220px;
-  background:#0e1629;
-  border:1px solid var(--border);
-  border-radius:10px;
-  margin-top:15px;
 }
-
 footer {
   text-align:center;
   color:var(--muted);
   font-size:13px;
   padding:10px;
 }
-
 @media(max-width:500px) {
   body { padding:14px; }
   h1 { font-size:23px; }
@@ -214,37 +193,32 @@ footer {
   <div class="grid">
     <div class="metric">
       <div class="metric-label">Voltage</div>
-      <div class="metric-value"><span id="voltage">--</span></div>
+      <div class="metric-value" id="voltage">--</div>
       <div class="metric-unit">Volts (V)</div>
     </div>
-
     <div class="metric">
       <div class="metric-label">Current</div>
-      <div class="metric-value"><span id="current">--</span></div>
+      <div class="metric-value" id="current">--</div>
       <div class="metric-unit">Amperes (A)</div>
     </div>
-
     <div class="metric">
       <div class="metric-label">Power</div>
-      <div class="metric-value"><span id="power">--</span></div>
+      <div class="metric-value" id="power">--</div>
       <div class="metric-unit">Watts (W)</div>
     </div>
-
     <div class="metric">
       <div class="metric-label">Energy</div>
-      <div class="metric-value"><span id="energy">--</span></div>
+      <div class="metric-value" id="energy">--</div>
       <div class="metric-unit">Kilowatt-hours (kWh)</div>
     </div>
-
     <div class="metric">
       <div class="metric-label">Frequency</div>
-      <div class="metric-value"><span id="frequency">--</span></div>
+      <div class="metric-value" id="frequency">--</div>
       <div class="metric-unit">Hertz (Hz)</div>
     </div>
-
     <div class="metric">
       <div class="metric-label">Power Factor</div>
-      <div class="metric-value"><span id="pf">--</span></div>
+      <div class="metric-value" id="pf">--</div>
       <div class="metric-unit">PF</div>
     </div>
   </div>
@@ -270,7 +244,6 @@ footer {
       <div class="metric-label">History Records</div>
       <div class="metric-value" id="historyCount">0</div>
     </div>
-
     <div class="metric">
       <div class="metric-label">Latest Recorded Energy</div>
       <div class="metric-value" id="historyEnergy">--</div>
@@ -278,8 +251,34 @@ footer {
     </div>
   </div>
 
-  <h2 style="margin-top:24px">Power History Graph</h2>
-  <canvas id="powerChart"></canvas>
+  <!-- FOUR GRAPHS -->
+  <h2 style="margin-top:26px">📈 Energy Analysis Graphs</h2>
+
+  <div class="chart-box">
+    <h3>Voltage History (V)</h3>
+    <canvas class="chart" id="voltageChart"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Current History (A)</h3>
+    <canvas class="chart" id="currentChart"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Power History (W)</h3>
+    <canvas class="chart" id="powerChart"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Energy Consumption (kWh per interval)</h3>
+    <canvas class="chart" id="energyChart"></canvas>
+  </div>
+
+  <p class="muted">
+    Energy consumption is calculated from the difference between
+    consecutive cumulative energy readings. The first record has no
+    previous interval for comparison.
+  </p>
 
   <h2 style="margin-top:24px">History Records</h2>
 
@@ -296,7 +295,6 @@ footer {
           <th>PF</th>
         </tr>
       </thead>
-
       <tbody id="historyTable">
         <tr><td colspan="7">Loading history...</td></tr>
       </tbody>
@@ -314,7 +312,7 @@ footer {
   </p>
 </section>
 
-<!-- ADMIN LOGIN - MOVED TO BOTTOM -->
+<!-- ADMIN LOGIN AT BOTTOM -->
 <section class="section" id="adminSection">
   <div class="section-head">
     <h2>🔐 Admin Login</h2>
@@ -329,7 +327,6 @@ footer {
     <div class="fields">
       <input id="adminEmail" type="email"
         placeholder="Admin email" autocomplete="username" required>
-
       <input id="adminPassword" type="password"
         placeholder="Password" autocomplete="current-password" required>
     </div>
@@ -345,7 +342,6 @@ footer {
     Sign in with your admin account.
   </p>
 
-  <!-- CHANGE PASSWORD -->
   <div id="changePasswordPanel" hidden>
     <hr style="border-color:var(--border);margin:22px 0">
     <h2>Change Password</h2>
@@ -354,11 +350,9 @@ footer {
       <div class="fields">
         <input id="currentPassword" type="password"
           placeholder="Current password" autocomplete="current-password" required>
-
         <input id="newPassword" type="password"
           placeholder="New password (at least 6 characters)"
           autocomplete="new-password" minlength="6" required>
-
         <input id="confirmPassword" type="password"
           placeholder="Confirm new password"
           autocomplete="new-password" minlength="6" required>
@@ -520,7 +514,6 @@ onValue(liveRef, (snapshot) => {
 
   $("liveMessage").textContent =
     "Live meter data received successfully.";
-
   $("liveMessage").className = "message good";
 
 }, (error) => {
@@ -530,7 +523,6 @@ onValue(liveRef, (snapshot) => {
 
   $("liveMessage").textContent =
     "Firebase read failed: " + error.message;
-
   $("liveMessage").className = "message bad";
 });
 
@@ -540,7 +532,6 @@ onValue(liveRef, (snapshot) => {
 $("loginForm").addEventListener("submit", async (event) => {
 
   event.preventDefault();
-
   $("loginBtn").disabled = true;
   showAuthMessage("Signing in...");
 
@@ -549,7 +540,6 @@ $("loginForm").addEventListener("submit", async (event) => {
     const password = $("adminPassword").value;
 
     await signInWithEmailAndPassword(auth, email, password);
-
     $("adminPassword").value = "";
 
   } catch (error) {
@@ -601,19 +591,15 @@ $("forgotBtn").addEventListener("click", async () => {
 
 // ===== HISTORY DISPLAY =====
 
-let historyRecords = {};
-
 function renderHistory(records) {
 
-  historyRecords = records || {};
-
-  const entries = Object.entries(historyRecords)
+  const entries = Object.entries(records || {})
     .filter(([id, item]) =>
       item &&
       Number.isFinite(Number(item.timestamp))
     )
     .sort((a, b) =>
-      Number(b[1].timestamp) - Number(a[1].timestamp)
+      Number(a[1].timestamp) - Number(b[1].timestamp)
     );
 
   $("historyCount").textContent = entries.length;
@@ -621,26 +607,27 @@ function renderHistory(records) {
   if (entries.length === 0) {
 
     $("historyEnergy").textContent = "--";
-
     $("historyTable").innerHTML =
       '<tr><td colspan="7">No history records found.</td></tr>';
 
     $("historyStatus").textContent = "No records";
 
-    drawPowerChart([]);
-
+    drawAllCharts([]);
     return;
   }
 
   $("historyStatus").textContent = "History loaded";
 
-  $("historyEnergy").textContent =
-    Number(entries[0][1].energy ?? 0).toFixed(3);
+  const latest = entries[entries.length - 1][1];
 
+  $("historyEnergy").textContent =
+    Number(latest.energy ?? 0).toFixed(3);
+
+  // Latest 100 records in reverse chronological order
   const tbody = $("historyTable");
   tbody.replaceChildren();
 
-  entries.slice(0, 100).forEach(([id, item]) => {
+  entries.slice(-100).reverse().forEach(([id, item]) => {
 
     const row = document.createElement("tr");
 
@@ -665,15 +652,15 @@ function renderHistory(records) {
     tbody.appendChild(row);
   });
 
-  drawPowerChart(entries.slice(0, 30).reverse());
+  drawAllCharts(entries.slice(-30));
 }
 
 
-// ===== POWER HISTORY GRAPH =====
+// ===== GENERIC GRAPH DRAWER =====
 
-function drawPowerChart(entries) {
+function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
 
-  const canvas = $("powerChart");
+  const canvas = $(canvasId);
   const ctx = canvas.getContext("2d");
 
   const width = canvas.clientWidth || 600;
@@ -693,16 +680,59 @@ function drawPowerChart(entries) {
     return;
   }
 
-  const values = entries.map(([, item]) =>
-    Number(item.power) || 0
-  );
+  let points = entries.map((entry, index) => {
 
-  const max = Math.max(...values, 1);
+    const item = entry[1];
+    let value = Number(item[field]);
 
-  const padding = 30;
+    if (!Number.isFinite(value)) value = 0;
+
+    // Calculate interval consumption from cumulative energy
+    if (intervalEnergy) {
+      if (index === 0) {
+        return null;
+      }
+
+      const previousEnergy = Number(entries[index - 1][1].energy);
+      const currentEnergy = Number(item.energy);
+
+      if (
+        !Number.isFinite(previousEnergy) ||
+        !Number.isFinite(currentEnergy)
+      ) {
+        return null;
+      }
+
+      value = currentEnergy - previousEnergy;
+
+      // Ignore negative differences caused by meter reset
+      if (value < 0) return null;
+    }
+
+    return {
+      value,
+      timestamp: Number(item.timestamp)
+    };
+  }).filter(point => point !== null);
+
+  if (!points.length) {
+    ctx.fillStyle = "#9ba9c3";
+    ctx.font = "14px Arial";
+    ctx.fillText("Waiting for another energy record", 15, 30);
+    return;
+  }
+
+  const values = points.map(point => point.value);
+  const max = Math.max(...values, 0);
+  const min = Math.min(...values, 0);
+
+  const padding = 35;
   const graphWidth = width - padding * 2;
   const graphHeight = height - padding * 2;
 
+  const range = max - min || 1;
+
+  // Grid
   ctx.strokeStyle = "#28344c";
   ctx.lineWidth = 1;
 
@@ -715,19 +745,29 @@ function drawPowerChart(entries) {
     ctx.stroke();
   }
 
+  // Y-axis labels
+  ctx.fillStyle = "#9ba9c3";
+  ctx.font = "10px Arial";
+
+  for (let i = 0; i <= 4; i++) {
+    const value = max - (range * i / 4);
+    ctx.fillText(value.toFixed(2), 3, padding + graphHeight * i / 4 + 4);
+  }
+
+  // Data line
   ctx.strokeStyle = "#7c6cff";
   ctx.lineWidth = 2;
   ctx.beginPath();
 
-  values.forEach((value, index) => {
+  points.forEach((point, index) => {
 
     const x = padding +
-      (values.length === 1
-        ? 0
-        : index * graphWidth / (values.length - 1));
+      (points.length === 1
+        ? graphWidth / 2
+        : index * graphWidth / (points.length - 1));
 
     const y = height - padding -
-      (value / max) * graphHeight;
+      ((point.value - min) / range) * graphHeight;
 
     if (index === 0) {
       ctx.moveTo(x, y);
@@ -738,9 +778,65 @@ function drawPowerChart(entries) {
 
   ctx.stroke();
 
+  // Points
+  ctx.fillStyle = "#36d399";
+
+  points.forEach((point, index) => {
+
+    const x = padding +
+      (points.length === 1
+        ? graphWidth / 2
+        : index * graphWidth / (points.length - 1));
+
+    const y = height - padding -
+      ((point.value - min) / range) * graphHeight;
+
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
   ctx.fillStyle = "#9ba9c3";
   ctx.font = "11px Arial";
-  ctx.fillText("Power (W)", padding, 15);
+  ctx.fillText(label, padding, 15);
+
+  ctx.fillText("Oldest", padding, height - 8);
+  ctx.fillText("Latest", width - padding - 35, height - 8);
+}
+
+
+// ===== DRAW ALL FOUR GRAPHS =====
+
+function drawAllCharts(entries) {
+
+  drawChart(
+    "voltageChart",
+    entries,
+    "voltage",
+    "Voltage (V)"
+  );
+
+  drawChart(
+    "currentChart",
+    entries,
+    "current",
+    "Current (A)"
+  );
+
+  drawChart(
+    "powerChart",
+    entries,
+    "power",
+    "Power (W)"
+  );
+
+  drawChart(
+    "energyChart",
+    entries,
+    "energy",
+    "Energy consumed per interval (kWh)",
+    true
+  );
 }
 
 
@@ -991,6 +1087,14 @@ $("passwordForm").addEventListener("submit", async (event) => {
 
     $("changePasswordBtn").disabled = false;
   }
+});
+
+
+// ===== REDRAW GRAPHS ON RESIZE =====
+
+window.addEventListener("resize", async () => {
+  const snapshot = await get(historyRef);
+  renderHistory(snapshot.val());
 });
 
 </script>
