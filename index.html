@@ -3,95 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VoltVision | Smart Energy Meter</title>
+<title>VoltVision | Smart Energy Meter Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg:#0b1020; --panel:#141c30; --border:#28344c;
-  --text:#f1f5ff; --muted:#9ba9c3; --accent:#7c6cff;
-  --green:#36d399; --red:#ff667a;
+:root{
+  --bg:#f4f7fc; --panel:#ffffff; --border:#e2e8f0;
+  --text:#1e293b; --muted:#64748b; --primary:#3b82f6;
+  --green:#10b981; --red:#ef4444; --purple:#8b5cf6;
+  --shadow:0 10px 25px -5px rgba(59, 130, 246, 0.08), 0 8px 10px -6px rgba(59, 130, 246, 0.04);
+  --card-radius:20px;
 }
-* { box-sizing:border-box; }
-body {
-  margin:0; padding:24px; background:var(--bg);
-  color:var(--text); font-family:Arial,sans-serif;
+*{box-sizing:border-box}
+body{
+  margin:0; padding:32px 16px; color:var(--text); font-family:'Plus Jakarta Sans', Arial, sans-serif;
+  background:var(--bg); min-height:100vh; -webkit-font-smoothing:antialiased;
 }
-.container { max-width:1100px; margin:auto; }
-header,.section-head {
-  display:flex; align-items:center; justify-content:space-between;
-  flex-wrap:wrap; gap:12px;
+.container{max-width:1160px;margin:auto}
+header,.section-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+header{
+  margin-bottom:28px; padding:24px 32px; border:1px solid var(--border); border-radius:var(--card-radius);
+  background:linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow:var(--shadow);
 }
-header { margin-bottom:26px; }
-h1 { margin:0; font-size:28px; }
-h1 span { color:var(--accent); }
-h2 { margin:0; font-size:20px; }
-p { line-height:1.5; }
-.muted { color:var(--muted); font-size:14px; }
-.pill {
-  display:inline-block; padding:7px 12px;
-  border:1px solid var(--border); border-radius:30px;
-  font-size:13px; color:var(--muted);
+h1{margin:0;font-size:30px;letter-spacing:-0.5px;font-weight:700}
+h1 span{
+  background:linear-gradient(135deg,#3b82f6 0%,#6366f1 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.section {
-  background:var(--panel); border:1px solid var(--border);
-  border-radius:16px; padding:20px; margin-bottom:20px;
+h2{margin:0;font-size:20px;font-weight:700;color:#0f172a}
+h3{margin:0 0 12px;font-size:16px;font-weight:700;color:#334155}
+p{line-height:1.6;margin:8px 0 0 0}
+.muted{color:var(--muted);font-size:14px}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+  border:1px solid var(--border);border-radius:50px;font-size:12px;font-weight:600;
+  color:var(--muted);background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.02)
 }
-.grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
-  gap:14px; margin-top:18px;
+.section{
+  position:relative; background:var(--panel);
+  border:1px solid var(--border);border-radius:var(--card-radius);padding:28px;margin-bottom:24px;
+  box-shadow:var(--shadow); transition:transform 0.2s ease, box-shadow 0.2s ease;
 }
-.metric {
-  padding:18px; border-radius:12px;
-  border:1px solid var(--border); background:#0e1629; min-width:0;
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:16px;margin-top:20px}
+.metric{
+  padding:22px;border-radius:16px;border:1px solid rgba(255,255,255,0.4);min-width:0;
+  box-shadow:0 10px 20px -5px rgba(0,0,0,0.05);transition:transform 0.25s ease, box-shadow 0.25s ease;
 }
-.metric-label { color:var(--muted); font-size:14px; }
-.metric-value {
-  font-size:27px; font-weight:bold; margin-top:12px;
-  overflow-wrap:anywhere;
+.metric:hover{transform:translateY(-4px);box-shadow:0 14px 24px -6px rgba(0,0,0,0.08)}
+
+/* Live Energy Monitoring Card Color Accents (Exact order requested) */
+/* 1. Energy (kWh) - Blue Gradient */
+.section .grid .metric:nth-child(1) { background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color:#fff; }
+/* 2. Voltage (V) - Purple Gradient */
+.section .grid .metric:nth-child(2) { background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color:#fff; }
+/* 3. Current (A) - Pink Gradient */
+.section .grid .metric:nth-child(3) { background:linear-gradient(135deg, #ec4899 0%, #be185d 100%); color:#fff; }
+/* 4. Power (W) - Green Gradient */
+.section .grid .metric:nth-child(4) { background:linear-gradient(135deg, #10b981 0%, #047857 100%); color:#fff; }
+/* 5. Frequency (Hz) - Orange Gradient */
+.section .grid .metric:nth-child(5) { background:linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color:#fff; }
+/* 6. Power Factor (PF) - Cyan Gradient */
+.section .grid .metric:nth-child(6) { background:linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); color:#fff; }
+
+/* Text color overrides inside the top 6 gradient cards */
+.section .grid .metric:nth-child(-n+6) .metric-label,
+.section .grid .metric:nth-child(-n+6) .metric-unit { color:rgba(255,255,255,0.85); }
+.section .grid .metric:nth-child(-n+6) .metric-value { color:#ffffff; }
+
+/* Non-gradient standard metrics (like history metrics) remain clean light styling */
+.section .section .grid .metric {
+  background:#f8fafc !important; border:1px solid var(--border) !important; color:var(--text) !important;
 }
-.metric-unit { font-size:13px; color:var(--muted); }
-.fields {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:12px; margin-top:18px;
+.section .section .grid .metric .metric-label,
+.section .section .grid .metric .metric-unit { color:var(--muted) !important; }
+.section .section .grid .metric .metric-value { color:var(--text) !important; }
+
+.metric-label{font-size:13px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+.metric-value{font-size:28px;font-weight:700;margin-top:10px;overflow-wrap:anywhere;letter-spacing:-1px}
+.metric-unit{font-size:12px;font-weight:500;margin-top:4px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+input{
+  width:100%;padding:14px 16px;background:#f8fafc;color:var(--text);
+  border:1px solid var(--border);border-radius:12px;font-size:15px;font-family:inherit;transition:all 0.2s ease;min-width:0
 }
-input {
-  width:100%; padding:13px; background:#0b1020; color:var(--text);
-  border:1px solid var(--border); border-radius:9px;
-  font-size:16px; min-width:0;
+input:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(59,130,246,0.12)}
+button{
+  border:0;border-radius:12px;padding:12px 20px;
+  background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);color:white;cursor:pointer;
+  font-size:14px;font-weight:700;font-family:inherit;min-height:46px;
+  box-shadow:0 4px 12px rgba(59,130,246,0.25);transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
-button {
-  border:0; border-radius:9px; padding:12px 17px;
-  background:var(--accent); color:white; cursor:pointer;
-  font-size:14px; font-weight:bold; min-height:44px;
+button:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,0.35)}
+button:active{transform:translateY(0)}
+button.secondary{background:#f1f5f9;color:#475569;border:1px solid var(--border);box-shadow:none}
+button.secondary:hover{background:#e2e8f0;color:#1e293b;box-shadow:none}
+button.danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);box-shadow:0 4px 12px rgba(239,68,68,0.25)}
+button.danger:hover{box-shadow:0 6px 16px rgba(239,68,68,0.35)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.message{font-size:14px;font-weight:500;color:var(--muted);overflow-wrap:anywhere;margin-top:12px}
+.good{color:#059669}.bad{color:#dc2626}
+[hidden]{display:none!important}
+hr{border:0;border-top:1px solid var(--border);margin:26px 0}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:700px}
+table th,table td{padding:13px 16px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;font-size:13px}
+table th{color:#475569;font-weight:700;background:#f8fafc;border-top:1px solid var(--border)}
+table th:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+table th:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+table tr:hover td{background:#f8fafc}
+.table-wrap{overflow-x:auto;margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fff}
+.chart-box{
+  margin-top:22px;padding:20px;background:#f8fafc;
+  border:1px solid var(--border);border-radius:16px;
 }
-button.secondary { background:#28344c; }
-button:disabled { opacity:.45; cursor:not-allowed; }
-.actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
-.message { font-size:14px; color:var(--muted); overflow-wrap:anywhere; }
-.good { color:var(--green); }
-.bad { color:var(--red); }
-[hidden] { display:none !important; }
-hr { border-color:var(--border); margin:22px 0; }
-table { width:100%; border-collapse:collapse; min-width:700px; }
-table th,table td {
-  padding:11px; border-bottom:1px solid var(--border);
-  text-align:left; white-space:nowrap; font-size:13px;
-}
-table th { color:var(--accent); }
-.table-wrap { overflow-x:auto; margin-top:12px; }
-.chart-box {
-  margin-top:20px; padding:15px; background:#0e1629;
-  border:1px solid var(--border); border-radius:12px;
-}
-.chart-box h3 { margin:0 0 12px; font-size:16px; }
-.chart { display:block; width:100%; height:220px; }
-footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
-@media(max-width:500px) {
-  body { padding:14px; }
-  h1 { font-size:23px; }
-  .section { padding:15px; }
-  .metric-value { font-size:23px; }
-}
+.chart{display:block;width:100%;height:240px}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);margin-right:7px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;font-weight:500}
+@media(max-width:500px){body{padding:12px}h1{font-size:24px}.section{padding:18px}.metric-value{font-size:24px}}
 </style>
 </head>
 
@@ -103,7 +132,10 @@ footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
     <h1><span>Volt</span>Vision ⚡</h1>
     <p class="muted">Smart Energy Meter Dashboard</p>
   </div>
-  <span class="pill" id="connectionText">Connecting...</span>
+  <div class="actions" style="margin-top:0">
+    <span class="pill" id="connectionText">Connecting...</span>
+    <button id="adminOpenBtn" type="button">🔐 Admin Login</button>
+  </div>
 </header>
 
 <!-- LIVE DASHBOARD -->
@@ -114,51 +146,65 @@ footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
   </div>
 
   <div class="grid">
-
-  <!-- 1. ENERGY -->
-  <div class="metric">
-    <div class="metric-label">Energy</div>
-    <div class="metric-value" id="energy">--</div>
-    <div class="metric-unit">Kilowatt-hours (kWh)</div>
+    <!-- 1. ENERGY -->
+    <div class="metric">
+      <div class="metric-label">Energy</div>
+      <div class="metric-value" id="energy">--</div>
+      <div class="metric-unit">Kilowatt-hours (kWh)</div>
+    </div>
+    <!-- 2. VOLTAGE -->
+    <div class="metric">
+      <div class="metric-label">Voltage</div>
+      <div class="metric-value" id="voltage">--</div>
+      <div class="metric-unit">Volts (V)</div>
+    </div>
+    <!-- 3. CURRENT -->
+    <div class="metric">
+      <div class="metric-label">Current</div>
+      <div class="metric-value" id="current">--</div>
+      <div class="metric-unit">Amperes (A)</div>
+    </div>
+    <!-- 4. POWER -->
+    <div class="metric">
+      <div class="metric-label">Power</div>
+      <div class="metric-value" id="power">--</div>
+      <div class="metric-unit">Watts (W)</div>
+    </div>
+    <!-- 5. FREQUENCY -->
+    <div class="metric">
+      <div class="metric-label">Frequency</div>
+      <div class="metric-value" id="frequency">--</div>
+      <div class="metric-unit">Hertz (Hz)</div>
+    </div>
+    <!-- 6. POWER FACTOR -->
+    <div class="metric">
+      <div class="metric-label">Power Factor</div>
+      <div class="metric-value" id="pf">--</div>
+      <div class="metric-unit">PF</div>
+    </div>
   </div>
-
-  <!-- 2. VOLTAGE -->
-  <div class="metric">
-    <div class="metric-label">Voltage</div>
-    <div class="metric-value" id="voltage">--</div>
-    <div class="metric-unit">Volts (V)</div>
-  </div>
-
-  <!-- 3. CURRENT -->
-  <div class="metric">
-    <div class="metric-label">Current</div>
-    <div class="metric-value" id="current">--</div>
-    <div class="metric-unit">Amperes (A)</div>
-  </div>
-
-  <!-- 4. POWER -->
-  <div class="metric">
-    <div class="metric-label">Power</div>
-    <div class="metric-value" id="power">--</div>
-    <div class="metric-unit">Watts (W)</div>
-  </div>
-
-  <!-- 5. FREQUENCY -->
-  <div class="metric">
-    <div class="metric-label">Frequency</div>
-    <div class="metric-value" id="frequency">--</div>
-    <div class="metric-unit">Hertz (Hz)</div>
-  </div>
-
-  <!-- 6. POWER FACTOR -->
-  <div class="metric">
-    <div class="metric-label">Power Factor</div>
-    <div class="metric-value" id="pf">--</div>
-    <div class="metric-unit">PF</div>
-  </div>
-
-</div>
   <p class="message" id="liveMessage">Connecting to Firebase...</p>
+</section>
+
+<!-- NETWORK / DEVICE STATUS -->
+<section class="section" id="networkSection">
+  <div class="section-head">
+    <h2>📶 Network & System Status</h2>
+    <span class="pill" id="systemStatus"><span class="status-dot"></span>Checking system...</span>
+  </div>
+  <div class="grid">
+    <div class="metric">
+      <div class="metric-label">Connected Hotspot</div>
+      <div class="metric-value" id="connectedSSID" style="font-size:21px">--</div>
+      <div class="metric-unit">Configured Wi-Fi name</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">ESP32 Device</div>
+      <div class="metric-value" id="deviceStatus" style="font-size:21px">Checking...</div>
+      <div class="metric-unit" id="deviceStatusNote">Waiting for device data</div>
+    </div>
+  </div>
+  <p class="message" id="networkMessage">Status is based on the latest Firebase meter update.</p>
 </section>
 
 <!-- ENERGY HISTORY -->
@@ -184,7 +230,7 @@ footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
     </div>
   </div>
 
-  <h2 style="margin-top:26px">📈 Energy Analysis Graphs</h2>
+  <h2 style="margin-top:30px">📈 Energy Analysis Graphs</h2>
 
   <div class="chart-box">
     <h3>Voltage History (V)</h3>
@@ -209,7 +255,7 @@ footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
     previous interval for comparison.
   </p>
 
-  <h2 style="margin-top:24px">History Records</h2>
+  <h2 style="margin-top:28px">History Records</h2>
   <div class="table-wrap">
     <table>
       <thead>
@@ -225,108 +271,79 @@ footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
     </table>
   </div>
 
-  <div class="actions">
-    <button id="resetHistoryBtn" type="button" disabled>Reset History</button>
-  </div>
   <p id="historyMessage" class="message">History will appear here.</p>
 </section>
 
-<!-- ADMIN LOGIN -->
-<section class="section" id="adminSection">
+<!-- ADMIN ACCESS: COLLAPSED UNTIL THE TOP BUTTON IS PRESSED -->
+<section class="section" id="adminSection" hidden>
   <div class="section-head">
-    <h2>🔐 Admin Login</h2>
+    <h2>🔐 Admin Access</h2>
     <span class="pill" id="adminStatus">Not logged in</span>
   </div>
-
-  <p class="muted">Sign in using your configured Firebase admin account.</p>
-
   <form id="loginForm">
     <div class="fields">
-      <input id="adminEmail" type="email" placeholder="Admin email"
-        autocomplete="username" required>
-      <input id="adminPassword" type="password" placeholder="Password"
-        autocomplete="current-password" required>
+      <input id="adminEmail" type="email" placeholder="Admin email" autocomplete="username" required>
+      <input id="adminPassword" type="password" placeholder="Password" autocomplete="current-password" required>
     </div>
     <div class="actions">
       <button id="loginBtn" type="submit">Login</button>
       <button id="logoutBtn" class="secondary" type="button" hidden>Logout</button>
+      <button id="adminCloseBtn" class="secondary" type="button">Close</button>
     </div>
   </form>
+  <p id="authMessage" class="message">Sign in using your configured Firebase admin account.</p>
 
-  <p id="authMessage" class="message">Sign in with your admin account.</p>
-
-  <!-- PASSWORD OPTIONS: ADMIN ONLY -->
-  <div id="passwordAccess" hidden>
+  <div id="adminTools" hidden>
     <hr>
-    <button id="passwordToggleBtn" class="secondary" type="button">
-      Change Password
-    </button>
+    <h2>⚙️ Admin Control Panel</h2>
+    <div class="actions">
+      <button id="wifiToggleBtn" type="button">📶 Wi-Fi Settings</button>
+      <button id="historyToggleBtn" class="secondary" type="button">📊 History Tools</button>
+      <button id="passwordToggleBtn" class="secondary" type="button">🔑 Change Password</button>
+    </div>
 
-    <div id="changePasswordPanel" hidden>
+    <div id="wifiSettingsCard" hidden>
       <hr>
-      <h2>Change Password</h2>
-      <p class="muted">Choose one of the following methods.</p>
+      <h2>📶 ESP32 Wi-Fi / Hotspot Settings</h2>
+      <p class="muted">Enter the new hotspot details. Keep the current hotspot on until ESP32 receives the new settings and connects.</p>
+      <form id="wifiForm">
+        <div class="fields">
+          <input id="wifiSSID" type="text" placeholder="New Hotspot Name (SSID)" autocomplete="off" required>
+          <input id="wifiPassword" type="password" placeholder="New Hotspot Password" autocomplete="new-password" required>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--muted);cursor:pointer;font-weight:500;">
+          <input type="checkbox" id="showWifiPassword" style="width:auto;vertical-align:middle"> Show password
+        </label>
+        <div class="actions"><button id="saveWifiButton" type="submit">Connect New Wi-Fi</button></div>
+      </form>
+      <p id="wifiStatus" class="message" aria-live="polite">Admin login required.</p>
+    </div>
 
-      <h3>Option 1: Change using old password</h3>
+    <div id="historyTools" hidden>
+      <hr>
+      <h2>📊 History Management</h2>
+      <p class="muted">Clear all stored energy history records. This does not clear live meter readings.</p>
+      <button id="resetHistoryBtn" class="danger" type="button">Clear Energy History</button>
+      <p id="historyAdminMessage" class="message" aria-live="polite"></p>
+    </div>
+
+    <div id="passwordAccess" hidden>
+      <hr>
+      <h2>🔑 Change Admin Password</h2>
       <form id="passwordForm">
         <div class="fields">
-          <input id="currentPassword" type="password"
-            placeholder="Old Password" autocomplete="current-password" required>
-          <input id="newPassword" type="password"
-            placeholder="New Password (minimum 6 characters)"
-            autocomplete="new-password" minlength="6" required>
-          <input id="confirmPassword" type="password"
-            placeholder="Confirm New Password"
-            autocomplete="new-password" minlength="6" required>
+          <input id="currentPassword" type="password" placeholder="Old Password" autocomplete="current-password" required>
+          <input id="newPassword" type="password" placeholder="New Password (minimum 6 characters)" autocomplete="new-password" minlength="6" required>
+          <input id="confirmPassword" type="password" placeholder="Confirm New Password" autocomplete="new-password" minlength="6" required>
         </div>
-        <div class="actions">
-          <button id="changePasswordBtn" type="submit">Update Password</button>
-        </div>
+        <div class="actions"><button id="changePasswordBtn" type="submit">Update Password</button></div>
       </form>
       <p id="passwordMessage" class="message" aria-live="polite"></p>
-
       <hr>
-      <h3>Option 2: Reset using email</h3>
-      <p class="muted">
-        A password reset link will be sent to your registered admin email.
-      </p>
-      <button id="emailResetBtn" class="secondary" type="button">
-        Send Password Reset Link
-      </button>
+      <p class="muted">Forgot your password? Send a reset link to your registered admin email.</p>
+      <button id="emailResetBtn" class="secondary" type="button">Send Password Reset Link</button>
       <p id="emailResetMessage" class="message" aria-live="polite"></p>
     </div>
-  </div>
-
-  <!-- WIFI SETTINGS: ADMIN ONLY -->
-  <div id="wifiSettingsCard" hidden>
-    <hr>
-    <h2>📶 ESP32 Wi-Fi / Hotspot Settings</h2>
-    <p class="muted">
-      Enter the new hotspot details. ESP32 must be connected to its
-      existing Wi-Fi to receive these settings.
-    </p>
-
-    <form id="wifiForm">
-      <div class="fields">
-        <input id="wifiSSID" type="text"
-          placeholder="New Hotspot Name (SSID)" autocomplete="off" required>
-        <input id="wifiPassword" type="password"
-          placeholder="New Hotspot Password" autocomplete="new-password" required>
-      </div>
-
-      <label style="display:block;margin-top:12px;color:var(--muted)">
-        <input type="checkbox" id="showWifiPassword"
-          style="width:auto;vertical-align:middle">
-        Show password
-      </label>
-
-      <div class="actions">
-        <button id="saveWifiButton" type="submit">Save Wi-Fi Settings</button>
-      </div>
-    </form>
-    <p id="wifiStatus" class="message" aria-live="polite">
-      Admin login required.
-    </p>
   </div>
 </section>
 
@@ -379,6 +396,8 @@ const $ = (id) => document.getElementById(id);
 const liveRef = ref(db, "energyMeter");
 const historyRef = ref(db, "energy_history");
 const wifiConfigRef = ref(db, "wifi_config");
+let latestMeterUpdate = 0;
+let deviceOnlineTimer = null;
 
 
 // ===== MESSAGE FUNCTIONS =====
@@ -427,6 +446,8 @@ onValue(liveRef, (snapshot) => {
   const data = snapshot.val();
 
   if (!data) {
+    latestMeterUpdate = 0;
+    updateDeviceStatus();
     $("connectionText").textContent = "Connected · No data";
     $("liveMessage").textContent =
       "Firebase connected, but no meter data was found.";
@@ -440,6 +461,8 @@ onValue(liveRef, (snapshot) => {
       !Number.isFinite(number) ? "--" : number.toFixed(digits);
   };
 
+  latestMeterUpdate = Number(data.lastUpdate) || Date.now();
+  updateDeviceStatus();
   display("voltage", data.voltage);
   display("current", data.current, 3);
   display("power", data.power, 2);
@@ -473,8 +496,51 @@ onValue(liveRef, (snapshot) => {
 });
 
 
+// ===== DEVICE ONLINE / HOTSPOT DISPLAY =====
+function updateDeviceStatus() {
+  const age = latestMeterUpdate ? Date.now() - latestMeterUpdate : Infinity;
+  const online = age < 30000;
+  $("systemStatus").innerHTML = online
+    ? '<span class="status-dot"></span>SYSTEM ONLINE'
+    : '● SYSTEM OFFLINE';
+  $("systemStatus").style.color = online ? "var(--green)" : "var(--red)";
+  $("deviceStatus").textContent = online ? "ONLINE" : "OFFLINE";
+  $("deviceStatus").style.color = online ? "var(--green)" : "var(--red)";
+  $("deviceStatusNote").textContent = online
+    ? "Recent meter data received"
+    : "No recent meter update";
+}
+setInterval(updateDeviceStatus, 5000);
+
+onValue(wifiConfigRef, (snapshot) => {
+  const config = snapshot.val();
+  $("connectedSSID").textContent = config && config.ssid ? config.ssid : "Not configured";
+}, (error) => {
+  $("connectedSSID").textContent = "Unavailable";
+  $("networkMessage").textContent = "Wi-Fi name could not be read: " + error.message;
+});
+
 // ===== ADMIN LOGIN =====
 
+$("adminOpenBtn").addEventListener("click", () => {
+  $("adminSection").hidden = !$("adminSection").hidden;
+  if (!$("adminSection").hidden) {
+    $("adminSection").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+});
+$("adminCloseBtn").addEventListener("click", () => {
+  $("adminSection").hidden = true;
+});
+$("wifiToggleBtn").addEventListener("click", () => {
+  $("wifiSettingsCard").hidden = !$("wifiSettingsCard").hidden;
+  $("historyTools").hidden = true;
+  $("passwordAccess").hidden = true;
+});
+$("historyToggleBtn").addEventListener("click", () => {
+  $("historyTools").hidden = !$("historyTools").hidden;
+  $("wifiSettingsCard").hidden = true;
+  $("passwordAccess").hidden = true;
+});
 $("loginForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   $("loginBtn").disabled = true;
@@ -498,7 +564,11 @@ $("loginForm").addEventListener("submit", async (event) => {
 $("logoutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
-    $("changePasswordPanel").hidden = true;
+    $("adminTools").hidden = true;
+    $("wifiSettingsCard").hidden = true;
+    $("historyTools").hidden = true;
+    $("passwordAccess").hidden = true;
+    $("adminSection").hidden = true;
     showAuthMessage("You have logged out.", "good");
   } catch (error) {
     showAuthMessage(friendlyError(error), "bad");
@@ -509,11 +579,9 @@ $("logoutBtn").addEventListener("click", async () => {
 // ===== PASSWORD PANEL OPEN / CLOSE =====
 
 $("passwordToggleBtn").addEventListener("click", () => {
-  const panel = $("changePasswordPanel");
-  panel.hidden = !panel.hidden;
-
-  $("passwordToggleBtn").textContent =
-    panel.hidden ? "Change Password" : "Close Password Options";
+  $("passwordAccess").hidden = !$("passwordAccess").hidden;
+  $("wifiSettingsCard").hidden = true;
+  $("historyTools").hidden = true;
 });
 
 
@@ -606,7 +674,7 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   const canvas = $(canvasId);
   const ctx = canvas.getContext("2d");
   const width = canvas.clientWidth || 600;
-  const height = 220;
+  const height = 240;
   const ratio = window.devicePixelRatio || 1;
 
   canvas.width = width * ratio;
@@ -615,9 +683,9 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   ctx.clearRect(0, 0, width, height);
 
   if (!entries.length) {
-    ctx.fillStyle = "#9ba9c3";
-    ctx.font = "14px Arial";
-    ctx.fillText("No graph data available", 15, 30);
+    ctx.fillStyle = "#64748b";
+    ctx.font = "14px 'Plus Jakarta Sans', Arial";
+    ctx.fillText("No graph data available", 20, 40);
     return;
   }
 
@@ -644,21 +712,21 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   }).filter(point => point !== null);
 
   if (!points.length) {
-    ctx.fillStyle = "#9ba9c3";
-    ctx.font = "14px Arial";
-    ctx.fillText("Waiting for another energy record", 15, 30);
+    ctx.fillStyle = "#64748b";
+    ctx.font = "14px 'Plus Jakarta Sans', Arial";
+    ctx.fillText("Waiting for another energy record", 20, 40);
     return;
   }
 
   const values = points.map(point => point.value);
   const max = Math.max(...values, 0);
   const min = Math.min(...values, 0);
-  const padding = 35;
+  const padding = 40;
   const graphWidth = width - padding * 2;
   const graphHeight = height - padding * 2;
   const range = max - min || 1;
 
-  ctx.strokeStyle = "#28344c";
+  ctx.strokeStyle = "#e2e8f0";
   ctx.lineWidth = 1;
 
   for (let i = 0; i <= 4; i++) {
@@ -669,16 +737,16 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
     ctx.stroke();
   }
 
-  ctx.fillStyle = "#9ba9c3";
-  ctx.font = "10px Arial";
+  ctx.fillStyle = "#64748b";
+  ctx.font = "11px 'Plus Jakarta Sans', Arial";
 
   for (let i = 0; i <= 4; i++) {
     const value = max - (range * i / 4);
-    ctx.fillText(value.toFixed(2), 3, padding + graphHeight * i / 4 + 4);
+    ctx.fillText(value.toFixed(2), 5, padding + graphHeight * i / 4 + 4);
   }
 
-  ctx.strokeStyle = "#7c6cff";
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#3b82f6";
+  ctx.lineWidth = 2.5;
   ctx.beginPath();
 
   points.forEach((point, index) => {
@@ -693,7 +761,7 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   });
 
   ctx.stroke();
-  ctx.fillStyle = "#36d399";
+  ctx.fillStyle = "#10b981";
 
   points.forEach((point, index) => {
     const x = padding + (points.length === 1
@@ -703,15 +771,15 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
       ((point.value - min) / range) * graphHeight;
 
     ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
     ctx.fill();
   });
 
-  ctx.fillStyle = "#9ba9c3";
-  ctx.font = "11px Arial";
-  ctx.fillText(label, padding, 15);
-  ctx.fillText("Oldest", padding, height - 8);
-  ctx.fillText("Latest", width - padding - 35, height - 8);
+  ctx.fillStyle = "#64748b";
+  ctx.font = "12px 'Plus Jakarta Sans', Arial";
+  ctx.fillText(label, padding, 20);
+  ctx.fillText("Oldest", padding, height - 10);
+  ctx.fillText("Latest", width - padding - 40, height - 10);
 }
 
 
@@ -776,7 +844,7 @@ $("resetHistoryBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
 
   if (!user || user.uid !== ADMIN_UID) {
-    showHistoryMessage("Admin login required.", "bad");
+    $("historyAdminMessage").textContent = "Admin login required.";
     return;
   }
 
@@ -790,9 +858,9 @@ $("resetHistoryBtn").addEventListener("click", async () => {
 
   try {
     await remove(historyRef);
-    showHistoryMessage("All history records deleted successfully.", "good");
+    $("historyAdminMessage").textContent = "All history records deleted successfully.";
   } catch (error) {
-    showHistoryMessage("Reset failed: " + error.message, "bad");
+    $("historyAdminMessage").textContent = "Reset failed: " + error.message;
   } finally {
     $("resetHistoryBtn").disabled = false;
   }
@@ -821,16 +889,22 @@ onAuthStateChanged(auth, async (user) => {
 
   $("loginBtn").hidden = loggedIn;
   $("logoutBtn").hidden = !loggedIn;
+  $("adminOpenBtn").textContent = loggedIn ? "⚙️ Admin Panel" : "🔐 Admin Login";
+  $("adminTools").hidden = !loggedIn;
+  $("adminSection").hidden = !loggedIn && $("adminSection").hidden;
   $("adminEmail").disabled = loggedIn;
   $("adminPassword").hidden = loggedIn;
 
   // Both settings are visible only to admin
-  $("passwordAccess").hidden = !loggedIn;
-  $("wifiSettingsCard").hidden = !loggedIn;
+  $("passwordAccess").hidden = true;
+  $("wifiSettingsCard").hidden = true;
+  $("historyTools").hidden = true;
 
   if (!loggedIn) {
-    $("changePasswordPanel").hidden = true;
-    $("passwordToggleBtn").textContent = "Change Password";
+    $("adminTools").hidden = true;
+    $("wifiSettingsCard").hidden = true;
+    $("historyTools").hidden = true;
+    $("passwordAccess").hidden = true;
     $("wifiForm").reset();
     $("passwordForm").reset();
   }
@@ -838,6 +912,7 @@ onAuthStateChanged(auth, async (user) => {
   $("resetHistoryBtn").disabled = !loggedIn;
 
   if (loggedIn) {
+    $("adminSection").hidden = false;
     $("adminEmail").value = user.email || "";
     showAuthMessage("Admin authenticated successfully.", "good");
     await cleanOldHistory();
