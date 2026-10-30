@@ -3,238 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VoltVision | Smart Energy Meter Dashboard</title>
+<title>VoltVision | Smart Energy Meter</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg-gradient: radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12), transparent 40%),
-                 radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.12), transparent 40%),
-                 linear-gradient(135deg, #f0f4fd 0%, #e8eefb 50%, #f4f7fc 100%);
-  --panel-bg: rgba(255, 255, 255, 0.88);
-  --border: rgba(203, 213, 225, 0.8);
-  --text: #0f172a;
-  --muted: #64748b;
-  --primary: #3b82f6;
-  --green: #10b981;
-  --red: #ef4444;
-  --shadow: 0 12px 32px -4px rgba(59, 130, 246, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
-  --card-radius: 20px;
+:root{
+  --bg:#070b1d;
+  --panel:rgba(17,25,55,.78);
+  --border:rgba(126,151,255,.28);
+  --text:#f4f6ff;
+  --muted:#aab8dc;
+  --accent:#55c8ff;
+  --green:#39e6a2;
+  --red:#ff6685;
+  --purple:#a78bfa;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;padding:24px;color:var(--text);font-family:'Plus Jakarta Sans',Inter,Arial,sans-serif;
+  background:radial-gradient(ellipse at 12% 5%,rgba(37,99,235,.28),transparent 38%),
+             radial-gradient(ellipse at 88% 12%,rgba(124,58,237,.30),transparent 36%),
+             linear-gradient(135deg,#050817,#0b1230 52%,#160d32);
+  min-height:100vh;
+}
+.container{max-width:1180px;margin:auto}
+header,.section-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+header{
+  margin-bottom:20px;padding:20px;border:1px solid transparent;border-radius:20px;
+  background:linear-gradient(120deg,rgba(15,30,72,.96),rgba(45,20,91,.9)) padding-box,
+             linear-gradient(110deg,#22d3ee,#6366f1,#c084fc) border-box;
+  box-shadow:0 12px 40px rgba(31,65,180,.18)
+}
+h1{margin:0;font-size:30px;letter-spacing:.4px}
+h1 span{background:linear-gradient(90deg,#67e8f9,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{margin:0;font-size:20px}h3{margin:0 0 12px;font-size:16px}
+p{line-height:1.5}.muted{color:var(--muted);font-size:14px}
+
+.pill{
+  display:inline-flex;align-items:center;gap:6px;padding:7px 14px;
+  border:1px solid var(--border);border-radius:30px;font-size:12px;color:var(--muted);
+  background:rgba(10,18,43,.65)
 }
 
-*, *::before, *::after { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  padding: 32px 16px;
-  color: var(--text);
-  font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-  background: var(--bg-gradient);
-  background-attachment: fixed;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-.container { max-width: 1160px; margin: auto; }
-
-header, .section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-header {
-  margin-bottom: 28px;
-  padding: 24px 32px;
-  border-radius: var(--card-radius);
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 2px solid transparent;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), 
-                    linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow: var(--shadow);
-}
-
-h1 { margin: 0; font-size: 30px; letter-spacing: -0.5px; font-weight: 800; }
-h1 span {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-h2 { margin: 0; font-size: 20px; font-weight: 700; color: #0f172a; }
-h3 { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #334155; }
-p { line-height: 1.6; margin: 8px 0 0 0; }
-.muted { color: var(--muted); font-size: 14px; }
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-}
-
-.section {
-  position: relative;
-  background: var(--panel-bg);
-  backdrop-filter: blur(12px);
-  border-radius: var(--card-radius);
-  padding: 28px;
-  margin-bottom: 24px;
-  box-shadow: var(--shadow);
-  border: 2px solid transparent;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
-                    linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.25), rgba(236, 72, 153, 0.4));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.grid {
+.top-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.metric {
-  padding: 22px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  min-width: 0;
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.06);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.metric:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.12);
-}
-
-/* Bright Gradient Metric Cards */
-.section .grid .metric:nth-child(1) { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #fff; }
-.section .grid .metric:nth-child(2) { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: #fff; }
-.section .grid .metric:nth-child(3) { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: #fff; }
-.section .grid .metric:nth-child(4) { background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: #fff; }
-.section .grid .metric:nth-child(5) { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: #fff; }
-.section .grid .metric:nth-child(6) { background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); color: #fff; }
-
-.section .grid .metric:nth-child(-n+6) .metric-label,
-.section .grid .metric:nth-child(-n+6) .metric-unit { color: rgba(255, 255, 255, 0.9); }
-.section .grid .metric:nth-child(-n+6) .metric-value { color: #ffffff; }
-
-/* Non-gradient metric subcards */
-.section .section .grid .metric {
-  background: rgba(248, 250, 252, 0.9) !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text) !important;
-}
-.section .section .grid .metric .metric-label,
-.section .section .grid .metric .metric-unit { color: var(--muted) !important; }
-.section .section .grid .metric .metric-value { color: var(--text) !important; }
-
-.metric-label { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
-.metric-value { font-size: 28px; font-weight: 800; margin-top: 10px; overflow-wrap: anywhere; letter-spacing: -1px; }
-.metric-unit { font-size: 12px; font-weight: 600; margin-top: 4px; }
-
-.fields {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin-top: 18px;
-}
-
-.input-group {
+.top-card {
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(103,232,249,0.35);
+  background: linear-gradient(145deg, rgba(20,31,68,0.9), rgba(13,19,45,0.95));
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  justify-content: center;
 }
 
-.input-group label {
-  font-size: 13px;
-  font-weight: 700;
-  color: #334155;
+.top-energy-val {
+  font-size: 32px;
+  font-weight: 800;
+  color: #67e8f9;
+  margin-top: 4px;
 }
 
-input {
-  width: 100%;
-  padding: 14px 16px;
-  background: #ffffff;
-  color: var(--text);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  font-size: 15px;
-  font-family: inherit;
-  transition: all 0.2s ease;
-  min-width: 0;
+.section{
+  position:relative;background:linear-gradient(145deg,rgba(20,31,68,.88),rgba(13,19,45,.92)) padding-box,
+  linear-gradient(125deg,rgba(34,211,238,.7),rgba(99,102,241,.55),rgba(192,132,252,.7)) border-box;
+  border:1px solid transparent;border-radius:19px;padding:22px;margin-bottom:20px;
+  box-shadow:0 12px 34px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.04)
 }
 
-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:16px}
+
+.metric{
+  padding:18px;border-radius:15px;border:1px solid rgba(96,165,250,.35);
+  background:linear-gradient(145deg,rgba(15,28,62,.95),rgba(12,18,42,.95));min-width:0;
+  box-shadow:inset 0 0 22px rgba(59,130,246,.07)
 }
+.metric:nth-child(2n){border-color:rgba(167,139,250,.42)}
+.metric-label{color:var(--muted);font-size:12px;letter-spacing:.4px;font-weight:700;text-transform:uppercase}
+.metric-value{font-size:26px;font-weight:800;margin-top:8px;overflow-wrap:anywhere}
+.metric-unit{font-size:12px;color:var(--muted);margin-top:4px}
 
-button {
-  border: 0;
-  border-radius: 12px;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: inherit;
-  min-height: 46px;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
+input{
+  width:100%;padding:13px;background:rgba(5,10,27,.78);color:var(--text);
+  border:1px solid rgba(125,155,255,.35);border-radius:10px;font-size:15px;min-width:0
 }
+input:focus{outline:2px solid rgba(56,189,248,.45);border-color:#38bdf8}
 
-button:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4); }
-button:active { transform: translateY(0); }
-button.secondary { background: #f1f5f9; color: #475569; border: 1px solid var(--border); box-shadow: none; }
-button.secondary:hover { background: #e2e8f0; color: #1e293b; box-shadow: none; }
-button.danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3); }
-button:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+button{
+  border:1px solid rgba(147,197,253,.35);border-radius:10px;padding:12px 17px;
+  background:linear-gradient(100deg,#2563eb,#7c3aed);color:white;cursor:pointer;
+  font-size:14px;font-weight:700;min-height:44px;box-shadow:0 5px 18px rgba(79,70,229,.22)
+}
+button:hover{filter:brightness(1.13);transform:translateY(-1px)}
+button.secondary{background:rgba(46,59,96,.9);box-shadow:none}
+button.danger{background:linear-gradient(100deg,#be123c,#e11d48)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
 
-.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-.message { font-size: 14px; font-weight: 600; color: var(--muted); overflow-wrap: anywhere; margin-top: 12px; }
-.good { color: #059669; }
-.bad { color: #dc2626; }
-[hidden] { display: none !important; }
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:0}
+.message{font-size:14px;color:var(--muted);overflow-wrap:anywhere;margin-top:14px}
+.good{color:var(--green)}.bad{color:var(--red)}
+[hidden]{display:none!important}
 
-hr { border: 0; border-top: 1px solid var(--border); margin: 26px 0; }
+hr{border:0;border-top:1px solid rgba(147,164,220,.2);margin:22px 0}
+table{width:100%;border-collapse:collapse;min-width:700px}
+table th,table td{padding:12px 14px;border-bottom:1px solid rgba(147,164,220,.17);text-align:left;white-space:nowrap;font-size:13px}
+table th{color:#8bdcff;font-weight:700}
+.table-wrap{overflow-x:auto;margin-top:12px;border-radius:12px;border:1px solid rgba(125,155,255,.2)}
 
-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 700px; }
-table th, table td { padding: 13px 16px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; font-size: 13px; }
-table th { color: #475569; font-weight: 700; background: #f8fafc; border-top: 1px solid var(--border); }
-table th:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
-table th:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
-table tr:hover td { background: #f8fafc; }
+.chart-box{
+  margin-top:18px;padding:16px;background:rgba(8,16,40,.82);
+  border:1px solid rgba(139,92,246,.38);border-radius:15px;box-shadow:inset 0 0 22px rgba(59,130,246,.06)
+}
+.chart{display:block;width:100%;height:220px}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);margin-right:6px}
 
-.table-wrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--border); border-radius: 14px; background: #fff; }
-.chart-box { margin-top: 22px; padding: 20px; background: #f8fafc; border: 1px solid var(--border); border-radius: 16px; }
-.chart { display: block; width: 100%; height: 240px; }
-.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); margin-right: 7px; }
-footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px; font-weight: 600; }
+footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
 
-@media(max-width: 500px) {
-  body { padding: 12px; }
-  header { padding: 18px; }
-  h1 { font-size: 24px; }
-  .section { padding: 18px; }
-  .metric-value { font-size: 24px; }
+@media(max-width:768px){
+  header{flex-direction:column;align-items:flex-start}
+  .actions{width:100%;justify-content:space-between}
 }
 </style>
 </head>
@@ -247,13 +142,44 @@ footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px
     <h1><span>Volt</span>Vision ⚡</h1>
     <p class="muted">Smart Energy Meter Dashboard</p>
   </div>
-  <div class="actions" style="margin-top:0">
+
+  <div class="actions">
     <span class="pill" id="connectionText">Connecting...</span>
     <button id="adminOpenBtn" type="button">🔐 Admin Login</button>
   </div>
 </header>
 
-<!-- LIVE DASHBOARD -->
+<!-- STARTING SECTION: ENERGY CARD & SYSTEM STATUS -->
+<div class="top-cards-grid">
+  <!-- Top Energy Box -->
+  <div class="top-card">
+    <span class="muted" style="font-size:12px;font-weight:700;letter-spacing:0.5px;">TOTAL ENERGY CONSUMED</span>
+    <div>
+      <span class="top-energy-val" id="energy">--</span>
+      <span class="muted" style="font-size:14px;font-weight:600;">kWh</span>
+    </div>
+  </div>
+
+  <!-- Compact Network & System Status Box -->
+  <div class="top-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span class="muted" style="font-size:12px;font-weight:700;letter-spacing:0.5px;">SYSTEM & NETWORK STATUS</span>
+      <span class="pill" id="systemStatus"><span class="status-dot"></span>Checking...</span>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:20px;flex-wrap:wrap;">
+      <div>
+        <span class="muted" style="font-size:11px;">HOTSPOT</span>
+        <div id="connectedSSID" style="font-size:16px;font-weight:700;color:var(--text)">Loading...</div>
+      </div>
+      <div>
+        <span class="muted" style="font-size:11px;">ESP32 DEVICE</span>
+        <div id="deviceStatus" style="font-size:16px;font-weight:700;color:var(--green)">Checking...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5 LIVE MONITORING BLOCKS -->
 <section class="section">
   <div class="section-head">
     <h2>Live Energy Monitoring</h2>
@@ -261,37 +187,26 @@ footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px
   </div>
 
   <div class="grid">
-    <!-- 1. ENERGY -->
-    <div class="metric">
-      <div class="metric-label">Energy</div>
-      <div class="metric-value" id="energy">--</div>
-      <div class="metric-unit">Kilowatt-hours (kWh)</div>
-    </div>
-    <!-- 2. VOLTAGE -->
     <div class="metric">
       <div class="metric-label">Voltage</div>
       <div class="metric-value" id="voltage">--</div>
       <div class="metric-unit">Volts (V)</div>
     </div>
-    <!-- 3. CURRENT -->
     <div class="metric">
       <div class="metric-label">Current</div>
       <div class="metric-value" id="current">--</div>
       <div class="metric-unit">Amperes (A)</div>
     </div>
-    <!-- 4. POWER -->
     <div class="metric">
       <div class="metric-label">Power</div>
       <div class="metric-value" id="power">--</div>
       <div class="metric-unit">Watts (W)</div>
     </div>
-    <!-- 5. FREQUENCY -->
     <div class="metric">
       <div class="metric-label">Frequency</div>
       <div class="metric-value" id="frequency">--</div>
       <div class="metric-unit">Hertz (Hz)</div>
     </div>
-    <!-- 6. POWER FACTOR -->
     <div class="metric">
       <div class="metric-label">Power Factor</div>
       <div class="metric-value" id="pf">--</div>
@@ -301,51 +216,11 @@ footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px
   <p class="message" id="liveMessage">Connecting to Firebase...</p>
 </section>
 
-<!-- NETWORK / DEVICE STATUS -->
-<section class="section" id="networkSection">
-  <div class="section-head">
-    <h2>📶 Network & System Status</h2>
-    <span class="pill" id="systemStatus"><span class="status-dot"></span>Checking system...</span>
-  </div>
-  <div class="grid">
-    <div class="metric">
-      <div class="metric-label">Connected Hotspot</div>
-      <div class="metric-value" id="connectedSSID" style="font-size:21px">--</div>
-      <div class="metric-unit">Configured Wi-Fi name</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">ESP32 Device</div>
-      <div class="metric-value" id="deviceStatus" style="font-size:21px">Checking...</div>
-      <div class="metric-unit" id="deviceStatusNote">Waiting for device data</div>
-    </div>
-  </div>
-  <p class="message" id="networkMessage">Status is based on the latest Firebase meter update.</p>
-</section>
-
-<!-- ENERGY HISTORY -->
+<!-- 4 GRAPHS SECTION -->
 <section class="section">
   <div class="section-head">
-    <h2>📊 Energy History</h2>
-    <span class="pill" id="historyStatus">Loading history...</span>
+    <h2>📈 Energy Analysis Graphs</h2>
   </div>
-
-  <p class="muted">
-    ESP32 saves a new history record every 2 minutes while it is online.
-  </p>
-
-  <div class="grid">
-    <div class="metric">
-      <div class="metric-label">History Records</div>
-      <div class="metric-value" id="historyCount">0</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Latest Recorded Energy</div>
-      <div class="metric-value" id="historyEnergy">--</div>
-      <div class="metric-unit">kWh</div>
-    </div>
-  </div>
-
-  <h2 style="margin-top:30px">📈 Energy Analysis Graphs</h2>
 
   <div class="chart-box">
     <h3>Voltage History (V)</h3>
@@ -363,14 +238,30 @@ footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px
     <h3>Energy Consumption (kWh per interval)</h3>
     <canvas class="chart" id="energyChart"></canvas>
   </div>
+</section>
 
-  <p class="muted">
-    Energy consumption is calculated from the difference between
-    consecutive cumulative energy readings. The first record has no
-    previous interval for comparison.
-  </p>
+<!-- ENERGY HISTORY RECORDS & DOWNLOAD BUTTON -->
+<section class="section">
+  <div class="section-head">
+    <h2>📊 Energy History Records</h2>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button id="downloadCsvBtn" class="secondary" type="button" style="min-height:36px;padding:6px 14px;font-size:12px;">📥 Download CSV</button>
+      <span class="pill" id="historyStatus">Loading history...</span>
+    </div>
+  </div>
 
-  <h2 style="margin-top:28px">History Records</h2>
+  <div class="grid" style="margin-bottom:16px">
+    <div class="metric">
+      <div class="metric-label">History Records</div>
+      <div class="metric-value" id="historyCount">0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Latest Recorded Energy</div>
+      <div class="metric-value" id="historyEnergy">--</div>
+      <div class="metric-unit">kWh</div>
+    </div>
+  </div>
+
   <div class="table-wrap">
     <table>
       <thead>
@@ -389,25 +280,19 @@ footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px
   <p id="historyMessage" class="message">History will appear here.</p>
 </section>
 
-<!-- ADMIN ACCESS SECTION -->
+<!-- ADMIN ACCESS PANEL -->
 <section class="section" id="adminSection" hidden>
   <div class="section-head">
     <h2>🔐 Admin Access</h2>
     <span class="pill" id="adminStatus">Not logged in</span>
   </div>
-  
+
   <form id="loginForm">
     <div class="fields">
-      <div class="input-group">
-        <label for="adminEmail">Username / Admin Email</label>
-        <input id="adminEmail" type="email" placeholder="Enter admin email" autocomplete="username" required>
-      </div>
-      <div class="input-group">
-        <label for="adminPassword">Password</label>
-        <input id="adminPassword" type="password" placeholder="Enter password" autocomplete="current-password" required>
-      </div>
+      <input id="adminEmail" type="email" placeholder="Admin email" autocomplete="username" required>
+      <input id="adminPassword" type="password" placeholder="Password" autocomplete="current-password" required>
     </div>
-    <div class="actions">
+    <div class="actions" style="margin-top:14px">
       <button id="loginBtn" type="submit">Login</button>
       <button id="logoutBtn" class="secondary" type="button" hidden>Logout</button>
       <button id="adminCloseBtn" class="secondary" type="button">Close</button>
@@ -418,67 +303,54 @@ footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px
   <div id="adminTools" hidden>
     <hr>
     <h2>⚙️ Admin Control Panel</h2>
-    <div class="actions">
+    <div class="actions" style="margin-top:14px">
       <button id="wifiToggleBtn" type="button">📶 Wi-Fi Settings</button>
       <button id="historyToggleBtn" class="secondary" type="button">📊 History Tools</button>
       <button id="passwordToggleBtn" class="secondary" type="button">🔑 Change Password</button>
     </div>
 
-    <!-- WIFI SETTINGS: HIDDEN UNTIL ADMIN TOGGLES IT -->
+    <!-- WIFI SETTINGS -->
     <div id="wifiSettingsCard" hidden>
       <hr>
       <h2>📶 ESP32 Wi-Fi / Hotspot Settings</h2>
-      <p class="muted">Enter the new hotspot details. Keep the current hotspot on until ESP32 receives the new settings and connects.</p>
+      <p class="muted">Enter the new hotspot details. Keep current hotspot active until ESP32 receives settings.</p>
       <form id="wifiForm">
         <div class="fields">
-          <div class="input-group">
-            <label for="wifiSSID">New Hotspot Name (SSID)</label>
-            <input id="wifiSSID" type="text" placeholder="Enter hotspot name" autocomplete="off" required>
-          </div>
-          <div class="input-group">
-            <label for="wifiPassword">New Hotspot Password</label>
-            <input id="wifiPassword" type="password" placeholder="Enter password" autocomplete="new-password" required>
-          </div>
+          <input id="wifiSSID" type="text" placeholder="New Hotspot Name (SSID)" autocomplete="off" required>
+          <input id="wifiPassword" type="password" placeholder="New Hotspot Password" autocomplete="new-password" required>
         </div>
-        <label style="display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--muted);cursor:pointer;font-weight:600;">
+        <label style="display:block;margin-top:12px;color:var(--muted)">
           <input type="checkbox" id="showWifiPassword" style="width:auto;vertical-align:middle"> Show password
         </label>
-        <div class="actions"><button id="saveWifiButton" type="submit">Connect New Wi-Fi</button></div>
+        <div class="actions" style="margin-top:14px"><button id="saveWifiButton" type="submit">Connect New Wi-Fi</button></div>
       </form>
       <p id="wifiStatus" class="message" aria-live="polite">Admin login required.</p>
     </div>
 
+    <!-- HISTORY CLEAR TOOLS -->
     <div id="historyTools" hidden>
       <hr>
       <h2>📊 History Management</h2>
-      <p class="muted">Clear all stored energy history records. This does not clear live meter readings.</p>
+      <p class="muted">Clear stored energy history records. Live meter readings will not be affected.</p>
       <button id="resetHistoryBtn" class="danger" type="button">Clear Energy History</button>
       <p id="historyAdminMessage" class="message" aria-live="polite"></p>
     </div>
 
+    <!-- CHANGE PASSWORD -->
     <div id="passwordAccess" hidden>
       <hr>
       <h2>🔑 Change Admin Password</h2>
       <form id="passwordForm">
         <div class="fields">
-          <div class="input-group">
-            <label for="currentPassword">Old Password</label>
-            <input id="currentPassword" type="password" placeholder="Old Password" autocomplete="current-password" required>
-          </div>
-          <div class="input-group">
-            <label for="newPassword">New Password</label>
-            <input id="newPassword" type="password" placeholder="Min 6 characters" autocomplete="new-password" minlength="6" required>
-          </div>
-          <div class="input-group">
-            <label for="confirmPassword">Confirm New Password</label>
-            <input id="confirmPassword" type="password" placeholder="Confirm Password" autocomplete="new-password" minlength="6" required>
-          </div>
+          <input id="currentPassword" type="password" placeholder="Old Password" autocomplete="current-password" required>
+          <input id="newPassword" type="password" placeholder="New Password (min 6 chars)" autocomplete="new-password" minlength="6" required>
+          <input id="confirmPassword" type="password" placeholder="Confirm New Password" autocomplete="new-password" minlength="6" required>
         </div>
-        <div class="actions"><button id="changePasswordBtn" type="submit">Update Password</button></div>
+        <div class="actions" style="margin-top:14px"><button id="changePasswordBtn" type="submit">Update Password</button></div>
       </form>
       <p id="passwordMessage" class="message" aria-live="polite"></p>
       <hr>
-      <p class="muted">Forgot your password? Send a reset link to your registered admin email.</p>
+      <p class="muted">Send reset link to registered admin email.</p>
       <button id="emailResetBtn" class="secondary" type="button">Send Password Reset Link</button>
       <p id="emailResetMessage" class="message" aria-live="polite"></p>
     </div>
@@ -492,8 +364,6 @@ footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px
 </main>
 
 <script type="module">
-
-// ===== FIREBASE IMPORTS =====
 
 import { initializeApp } from
 "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
@@ -509,9 +379,6 @@ import {
   updatePassword, reauthenticateWithCredential, EmailAuthProvider
 } from
 "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-
-
-// ===== FIREBASE CONFIGURATION =====
 
 const firebaseConfig = {
   apiKey: "AIzaSyAinEB-eaUeM4-B_ul6PmsE49uHCQHXLsY",
@@ -535,10 +402,7 @@ const liveRef = ref(db, "energyMeter");
 const historyRef = ref(db, "energy_history");
 const wifiConfigRef = ref(db, "wifi_config");
 let latestMeterUpdate = 0;
-let deviceOnlineTimer = null;
-
-
-// ===== MESSAGE FUNCTIONS =====
+let rawHistoryData = {};
 
 function showAuthMessage(message, type = "") {
   $("authMessage").textContent = message;
@@ -555,12 +419,8 @@ function showHistoryMessage(message, type = "") {
   $("historyMessage").className = "message " + type;
 }
 
-
-// ===== ERROR MESSAGES =====
-
 function friendlyError(error) {
   const code = error?.code || "";
-
   const messages = {
     "auth/invalid-credential": "Email or password is incorrect.",
     "auth/invalid-email": "Enter a valid email address.",
@@ -569,17 +429,12 @@ function friendlyError(error) {
     "auth/too-many-requests": "Too many attempts. Try again later.",
     "auth/network-request-failed": "Network error. Check your internet.",
     "auth/weak-password": "Choose a stronger password (at least 6 characters).",
-    "auth/requires-recent-login": "Sign in again, then change your password.",
-    "auth/operation-not-allowed": "Enable Email/Password sign-in in Firebase Authentication.",
-    "auth/unauthorized-domain": "Add your GitHub Pages domain to Firebase Authentication authorized domains."
+    "auth/requires-recent-login": "Sign in again, then change your password."
   };
-
   return messages[code] || error?.message || "Something went wrong.";
 }
 
-
-// ===== LIVE ENERGY MONITORING =====
-
+// Live Data Handling
 onValue(liveRef, (snapshot) => {
   const data = snapshot.val();
 
@@ -587,8 +442,7 @@ onValue(liveRef, (snapshot) => {
     latestMeterUpdate = 0;
     updateDeviceStatus();
     $("connectionText").textContent = "Connected · No data";
-    $("liveMessage").textContent =
-      "Firebase connected, but no meter data was found.";
+    $("liveMessage").textContent = "Firebase connected, but no meter data was found.";
     return;
   }
 
@@ -608,58 +462,48 @@ onValue(liveRef, (snapshot) => {
   display("frequency", data.frequency, 1);
   display("pf", data.pf, 2);
 
-  $("connectionText").textContent = "Firebase connected";
+  $("connectionText").textContent = "Connected";
   $("connectionText").style.color = "var(--green)";
 
   if (data.lastUpdate) {
     const date = new Date(Number(data.lastUpdate));
-    $("updatedText").textContent =
-      "Updated: " + (
-        Number.isNaN(date.getTime())
-          ? String(data.lastUpdate)
-          : date.toLocaleString()
-      );
+    $("updatedText").textContent = "Updated: " + (
+      Number.isNaN(date.getTime()) ? String(data.lastUpdate) : date.toLocaleString()
+    );
   } else {
     $("updatedText").textContent = "Data received";
   }
 
   $("liveMessage").textContent = "Live meter data received successfully.";
   $("liveMessage").className = "message good";
-
 }, (error) => {
-  $("connectionText").textContent = "Connection error";
+  $("connectionText").textContent = "Error";
   $("connectionText").style.color = "var(--red)";
   $("liveMessage").textContent = "Firebase read failed: " + error.message;
   $("liveMessage").className = "message bad";
 });
 
+// Connected Wi-Fi SSID for all users
+onValue(wifiConfigRef, (snapshot) => {
+  const config = snapshot.val();
+  $("connectedSSID").textContent = config && config.ssid ? config.ssid : "Not configured";
+}, () => {
+  $("connectedSSID").textContent = "Unavailable";
+});
 
-// ===== DEVICE ONLINE / HOTSPOT DISPLAY =====
 function updateDeviceStatus() {
   const age = latestMeterUpdate ? Date.now() - latestMeterUpdate : Infinity;
   const online = age < 30000;
   $("systemStatus").innerHTML = online
-    ? '<span class="status-dot"></span>SYSTEM ONLINE'
-    : '● SYSTEM OFFLINE';
+    ? '<span class="status-dot"></span>ONLINE'
+    : '<span class="status-dot" style="background:var(--red);box-shadow:0 0 10px var(--red)"></span>OFFLINE';
   $("systemStatus").style.color = online ? "var(--green)" : "var(--red)";
   $("deviceStatus").textContent = online ? "ONLINE" : "OFFLINE";
   $("deviceStatus").style.color = online ? "var(--green)" : "var(--red)";
-  $("deviceStatusNote").textContent = online
-    ? "Recent meter data received"
-    : "No recent meter update";
 }
 setInterval(updateDeviceStatus, 5000);
 
-onValue(wifiConfigRef, (snapshot) => {
-  const config = snapshot.val();
-  $("connectedSSID").textContent = config && config.ssid ? config.ssid : "Not configured";
-}, (error) => {
-  $("connectedSSID").textContent = "Unavailable";
-  $("networkMessage").textContent = "Wi-Fi name could not be read: " + error.message;
-});
-
-// ===== ADMIN LOGIN =====
-
+// Admin Controls
 $("adminOpenBtn").addEventListener("click", () => {
   $("adminSection").hidden = !$("adminSection").hidden;
   if (!$("adminSection").hidden) {
@@ -679,6 +523,12 @@ $("historyToggleBtn").addEventListener("click", () => {
   $("wifiSettingsCard").hidden = true;
   $("passwordAccess").hidden = true;
 });
+$("passwordToggleBtn").addEventListener("click", () => {
+  $("passwordAccess").hidden = !$("passwordAccess").hidden;
+  $("wifiSettingsCard").hidden = true;
+  $("historyTools").hidden = true;
+});
+
 $("loginForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   $("loginBtn").disabled = true;
@@ -696,9 +546,6 @@ $("loginForm").addEventListener("submit", async (event) => {
   }
 });
 
-
-// ===== ADMIN LOGOUT =====
-
 $("logoutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
@@ -707,43 +554,21 @@ $("logoutBtn").addEventListener("click", async () => {
     $("historyTools").hidden = true;
     $("passwordAccess").hidden = true;
     $("adminSection").hidden = true;
-    showAuthMessage("You have logged out.", "good");
+    showAuthMessage("Logged out successfully.", "good");
   } catch (error) {
     showAuthMessage(friendlyError(error), "bad");
   }
 });
 
-
-// ===== PASSWORD PANEL OPEN / CLOSE =====
-
-$("passwordToggleBtn").addEventListener("click", () => {
-  $("passwordAccess").hidden = !$("passwordAccess").hidden;
-  $("wifiSettingsCard").hidden = true;
-  $("historyTools").hidden = true;
-});
-
-
-// ===== EMAIL PASSWORD RESET =====
-
 $("emailResetBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
-
-  if (!user || user.uid !== ADMIN_UID) {
-    $("emailResetMessage").textContent = "Admin login required.";
-    $("emailResetMessage").className = "message bad";
-    return;
-  }
+  if (!user || user.uid !== ADMIN_UID) return;
 
   $("emailResetBtn").disabled = true;
-  $("emailResetMessage").textContent = "Sending reset link...";
-
   try {
     await sendPasswordResetEmail(auth, user.email);
-
-    $("emailResetMessage").textContent =
-      "Password reset link sent to your registered email. Check inbox and spam folder.";
+    $("emailResetMessage").textContent = "Password reset link sent to registered email.";
     $("emailResetMessage").className = "message good";
-
   } catch (error) {
     $("emailResetMessage").textContent = friendlyError(error);
     $("emailResetMessage").className = "message bad";
@@ -752,10 +577,35 @@ $("emailResetBtn").addEventListener("click", async () => {
   }
 });
 
+// CSV Export Feature
+$("downloadCsvBtn").addEventListener("click", () => {
+  const entries = Object.entries(rawHistoryData || {})
+    .filter(([id, item]) => item && Number.isFinite(Number(item.timestamp)))
+    .sort((a, b) => Number(a[1].timestamp) - Number(b[1].timestamp));
 
-// ===== HISTORY DISPLAY =====
+  if (!entries.length) {
+    alert("No history records available to download.");
+    return;
+  }
 
+  let csvContent = "data:text/csv;charset=utf-8,Date & Time,Voltage (V),Current (A),Power (W),Energy (kWh),Frequency (Hz),PF\n";
+  entries.forEach(([id, item]) => {
+    const date = new Date(Number(item.timestamp)).toLocaleString().replace(",", "");
+    csvContent += `${date},${item.voltage ?? 0},${item.current ?? 0},${item.power ?? 0},${item.energy ?? 0},${item.frequency ?? 0},${item.pf ?? 0}\n`;
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `VoltVision_Energy_History_${Date.now()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+
+// Render History Table & Graphs
 function renderHistory(records) {
+  rawHistoryData = records || {};
   const entries = Object.entries(records || {})
     .filter(([id, item]) => item && Number.isFinite(Number(item.timestamp)))
     .sort((a, b) => Number(a[1].timestamp) - Number(b[1].timestamp));
@@ -764,15 +614,13 @@ function renderHistory(records) {
 
   if (entries.length === 0) {
     $("historyEnergy").textContent = "--";
-    $("historyTable").innerHTML =
-      '<tr><td colspan="7">No history records found.</td></tr>';
+    $("historyTable").innerHTML = '<tr><td colspan="7">No history records found.</td></tr>';
     $("historyStatus").textContent = "No records";
     drawAllCharts([]);
     return;
   }
 
-  $("historyStatus").textContent = "History loaded";
-
+  $("historyStatus").textContent = "Loaded";
   const latest = entries[entries.length - 1][1];
   $("historyEnergy").textContent = Number(latest.energy ?? 0).toFixed(3);
 
@@ -782,7 +630,6 @@ function renderHistory(records) {
   entries.slice(-100).reverse().forEach(([id, item]) => {
     const row = document.createElement("tr");
     const date = new Date(Number(item.timestamp));
-
     const values = [
       date.toLocaleString(),
       Number(item.voltage ?? 0).toFixed(2),
@@ -792,27 +639,22 @@ function renderHistory(records) {
       Number(item.frequency ?? 0).toFixed(2),
       Number(item.pf ?? 0).toFixed(2)
     ];
-
-    values.forEach(value => {
+    values.forEach(val => {
       const cell = document.createElement("td");
-      cell.textContent = value;
+      cell.textContent = val;
       row.appendChild(cell);
     });
-
     tbody.appendChild(row);
   });
 
   drawAllCharts(entries.slice(-30));
 }
 
-
-// ===== GRAPH DRAWER =====
-
 function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   const canvas = $(canvasId);
   const ctx = canvas.getContext("2d");
   const width = canvas.clientWidth || 600;
-  const height = 240;
+  const height = 220;
   const ratio = window.devicePixelRatio || 1;
 
   canvas.width = width * ratio;
@@ -821,50 +663,45 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   ctx.clearRect(0, 0, width, height);
 
   if (!entries.length) {
-    ctx.fillStyle = "#64748b";
-    ctx.font = "14px 'Plus Jakarta Sans', Arial";
-    ctx.fillText("No graph data available", 20, 40);
+    ctx.fillStyle = "#aab8dc";
+    ctx.font = "14px 'Plus Jakarta Sans'";
+    ctx.fillText("No graph data available", 15, 30);
     return;
   }
 
   let points = entries.map((entry, index) => {
     const item = entry[1];
     let value = Number(item[field]);
-
     if (!Number.isFinite(value)) value = 0;
 
     if (intervalEnergy) {
       if (index === 0) return null;
-
-      const previousEnergy = Number(entries[index - 1][1].energy);
-      const currentEnergy = Number(item.energy);
-
-      if (!Number.isFinite(previousEnergy) ||
-          !Number.isFinite(currentEnergy)) return null;
-
-      value = currentEnergy - previousEnergy;
+      const prev = Number(entries[index - 1][1].energy);
+      const curr = Number(item.energy);
+      if (!Number.isFinite(prev) || !Number.isFinite(curr)) return null;
+      value = curr - prev;
       if (value < 0) return null;
     }
 
     return { value, timestamp: Number(item.timestamp) };
-  }).filter(point => point !== null);
+  }).filter(p => p !== null);
 
   if (!points.length) {
-    ctx.fillStyle = "#64748b";
-    ctx.font = "14px 'Plus Jakarta Sans', Arial";
-    ctx.fillText("Waiting for another energy record", 20, 40);
+    ctx.fillStyle = "#aab8dc";
+    ctx.font = "14px 'Plus Jakarta Sans'";
+    ctx.fillText("Waiting for next interval record", 15, 30);
     return;
   }
 
-  const values = points.map(point => point.value);
+  const values = points.map(p => p.value);
   const max = Math.max(...values, 0);
   const min = Math.min(...values, 0);
-  const padding = 40;
+  const padding = 35;
   const graphWidth = width - padding * 2;
   const graphHeight = height - padding * 2;
   const range = max - min || 1;
 
-  ctx.strokeStyle = "#cbd5e1";
+  ctx.strokeStyle = "rgba(125,155,255,.22)";
   ctx.lineWidth = 1;
 
   for (let i = 0; i <= 4; i++) {
@@ -875,319 +712,137 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
     ctx.stroke();
   }
 
-  ctx.fillStyle = "#64748b";
-  ctx.font = "11px 'Plus Jakarta Sans', Arial";
-
+  ctx.fillStyle = "#aab8dc";
+  ctx.font = "10px 'Plus Jakarta Sans'";
   for (let i = 0; i <= 4; i++) {
     const value = max - (range * i / 4);
-    ctx.fillText(value.toFixed(2), 5, padding + graphHeight * i / 4 + 4);
+    ctx.fillText(value.toFixed(2), 3, padding + graphHeight * i / 4 + 4);
   }
 
-  ctx.strokeStyle = "#3b82f6";
-  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = "#55c8ff";
+  ctx.lineWidth = 2;
   ctx.beginPath();
 
-  points.forEach((point, index) => {
-    const x = padding + (points.length === 1
-      ? graphWidth / 2
-      : index * graphWidth / (points.length - 1));
-    const y = height - padding -
-      ((point.value - min) / range) * graphHeight;
-
+  points.forEach((p, index) => {
+    const x = padding + (points.length === 1 ? graphWidth / 2 : index * graphWidth / (points.length - 1));
+    const y = height - padding - ((p.value - min) / range) * graphHeight;
     if (index === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   });
-
   ctx.stroke();
-  ctx.fillStyle = "#10b981";
 
-  points.forEach((point, index) => {
-    const x = padding + (points.length === 1
-      ? graphWidth / 2
-      : index * graphWidth / (points.length - 1));
-    const y = height - padding -
-      ((point.value - min) / range) * graphHeight;
-
+  ctx.fillStyle = "#a78bfa";
+  points.forEach((p, index) => {
+    const x = padding + (points.length === 1 ? graphWidth / 2 : index * graphWidth / (points.length - 1));
+    const y = height - padding - ((p.value - min) / range) * graphHeight;
     ctx.beginPath();
-    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
     ctx.fill();
   });
 
-  ctx.fillStyle = "#64748b";
-  ctx.font = "12px 'Plus Jakarta Sans', Arial";
-  ctx.fillText(label, padding, 20);
-  ctx.fillText("Oldest", padding, height - 10);
-  ctx.fillText("Latest", width - padding - 40, height - 10);
+  ctx.fillStyle = "#aab8dc";
+  ctx.font = "11px 'Plus Jakarta Sans'";
+  ctx.fillText(label, padding, 15);
 }
-
-
-// ===== DRAW ALL GRAPHS =====
 
 function drawAllCharts(entries) {
   drawChart("voltageChart", entries, "voltage", "Voltage (V)");
   drawChart("currentChart", entries, "current", "Current (A)");
   drawChart("powerChart", entries, "power", "Power (W)");
-  drawChart(
-    "energyChart", entries, "energy",
-    "Energy consumed per interval (kWh)", true
-  );
+  drawChart("energyChart", entries, "energy", "Energy (kWh)", true);
 }
-
-
-// ===== LOAD HISTORY =====
 
 onValue(historyRef, (snapshot) => {
   renderHistory(snapshot.val());
-  showHistoryMessage("History synchronized with Firebase.", "good");
+  showHistoryMessage("History updated.", "good");
 }, (error) => {
-  $("historyStatus").textContent = "Read error";
-  showHistoryMessage("History read failed: " + error.message, "bad");
+  showHistoryMessage("History error: " + error.message, "bad");
 });
-
-
-// ===== 7-DAY CLEANUP =====
-
-async function cleanOldHistory() {
-  const user = auth.currentUser;
-  if (!user || user.uid !== ADMIN_UID) return;
-
-  try {
-    const snapshot = await get(historyRef);
-    const records = snapshot.val() || {};
-    const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
-    const deletions = [];
-
-    for (const [id, item] of Object.entries(records)) {
-      if (
-        item &&
-        Number.isFinite(Number(item.timestamp)) &&
-        Number(item.timestamp) < sevenDaysAgo
-      ) {
-        deletions.push(remove(ref(db, "energy_history/" + id)));
-      }
-    }
-
-    await Promise.all(deletions);
-    showHistoryMessage("7-day cleanup completed successfully.", "good");
-
-  } catch (error) {
-    showHistoryMessage("History cleanup failed: " + error.message, "bad");
-  }
-}
-
-
-// ===== RESET HISTORY =====
 
 $("resetHistoryBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
-
-  if (!user || user.uid !== ADMIN_UID) {
-    $("historyAdminMessage").textContent = "Admin login required.";
-    return;
-  }
-
-  const confirmed = confirm(
-    "Are you sure? This will permanently delete all energy history."
-  );
-
-  if (!confirmed) return;
-
-  $("resetHistoryBtn").disabled = true;
+  if (!user || user.uid !== ADMIN_UID) return;
+  if (!confirm("Delete all energy history records?")) return;
 
   try {
     await remove(historyRef);
-    $("historyAdminMessage").textContent = "All history records deleted successfully.";
+    $("historyAdminMessage").textContent = "History cleared.";
   } catch (error) {
-    $("historyAdminMessage").textContent = "Reset failed: " + error.message;
-  } finally {
-    $("resetHistoryBtn").disabled = false;
+    $("historyAdminMessage").textContent = "Error: " + error.message;
   }
 });
 
-
-// ===== ADMIN AUTH STATE =====
-
 onAuthStateChanged(auth, async (user) => {
-  if (user && user.uid !== ADMIN_UID) {
-    showAuthMessage(
-      "This account is not authorized as the dashboard admin.", "bad"
-    );
-
-    try { await signOut(auth); } catch {}
-    return;
-  }
-
   const loggedIn = Boolean(user && user.uid === ADMIN_UID);
-
-  $("adminStatus").textContent =
-    loggedIn ? "Admin logged in" : "Not logged in";
-
-  $("adminStatus").style.color =
-    loggedIn ? "var(--green)" : "var(--muted)";
-
+  $("adminStatus").textContent = loggedIn ? "Admin logged in" : "Not logged in";
+  $("adminStatus").style.color = loggedIn ? "var(--green)" : "var(--muted)";
   $("loginBtn").hidden = loggedIn;
   $("logoutBtn").hidden = !loggedIn;
   $("adminOpenBtn").textContent = loggedIn ? "⚙️ Admin Panel" : "🔐 Admin Login";
   $("adminTools").hidden = !loggedIn;
-  $("adminSection").hidden = !loggedIn && $("adminSection").hidden;
   $("adminEmail").disabled = loggedIn;
   $("adminPassword").hidden = loggedIn;
-
-  // Both settings are visible only to admin
-  $("passwordAccess").hidden = true;
-  $("wifiSettingsCard").hidden = true;
-  $("historyTools").hidden = true;
-
-  if (!loggedIn) {
-    $("adminTools").hidden = true;
-    $("wifiSettingsCard").hidden = true;
-    $("historyTools").hidden = true;
-    $("passwordAccess").hidden = true;
-    $("wifiForm").reset();
-    $("passwordForm").reset();
-  }
-
-  $("resetHistoryBtn").disabled = !loggedIn;
 
   if (loggedIn) {
     $("adminSection").hidden = false;
     $("adminEmail").value = user.email || "";
-    showAuthMessage("Admin authenticated successfully.", "good");
-    await cleanOldHistory();
+    showAuthMessage("Authenticated.", "good");
   }
 });
 
-
-// ===== CHANGE PASSWORD USING OLD PASSWORD =====
-
-$("passwordForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-
+$("passwordForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
   const user = auth.currentUser;
+  if (!user || user.uid !== ADMIN_UID) return;
+
   const currentPassword = $("currentPassword").value;
   const newPassword = $("newPassword").value;
   const confirmPassword = $("confirmPassword").value;
 
-  if (!user || user.uid !== ADMIN_UID) {
-    showPasswordMessage("Please log in with the admin account first.", "bad");
-    return;
-  }
-
-  if (newPassword.length < 6) {
-    showPasswordMessage(
-      "New password must be at least 6 characters.", "bad"
-    );
-    return;
-  }
-
   if (newPassword !== confirmPassword) {
-    showPasswordMessage("New passwords do not match.", "bad");
+    showPasswordMessage("Passwords do not match.", "bad");
     return;
   }
-
-  if (newPassword === currentPassword) {
-    showPasswordMessage(
-      "Choose a password different from the current one.", "bad"
-    );
-    return;
-  }
-
-  $("changePasswordBtn").disabled = true;
-  showPasswordMessage("Verifying old password...");
 
   try {
-    const credential = EmailAuthProvider.credential(
-      user.email, currentPassword
-    );
-
-    await reauthenticateWithCredential(user, credential);
+    const cred = EmailAuthProvider.credential(user.email, currentPassword);
+    await reauthenticateWithCredential(user, cred);
     await updatePassword(user, newPassword);
-
     $("passwordForm").reset();
-    showPasswordMessage("Password changed successfully.", "good");
-
+    showPasswordMessage("Password updated.", "good");
   } catch (error) {
     showPasswordMessage(friendlyError(error), "bad");
-  } finally {
-    $("changePasswordBtn").disabled = false;
   }
 });
-
-
-// ===== ADMIN WIFI SETTINGS =====
 
 $("showWifiPassword").addEventListener("change", function () {
   $("wifiPassword").type = this.checked ? "text" : "password";
 });
 
-$("wifiForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-
+$("wifiForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
   const user = auth.currentUser;
-
-  if (!user || user.uid !== ADMIN_UID) {
-    $("wifiStatus").textContent = "Admin login required.";
-    $("wifiStatus").className = "message bad";
-    return;
-  }
+  if (!user || user.uid !== ADMIN_UID) return;
 
   const ssid = $("wifiSSID").value.trim();
   const password = $("wifiPassword").value;
 
-  if (!ssid || !password) {
-    $("wifiStatus").textContent =
-      "Enter both Wi-Fi name and password.";
-    $("wifiStatus").className = "message bad";
-    return;
-  }
-
-  if (ssid.length > 32 || password.length > 63) {
-    $("wifiStatus").textContent =
-      "Check SSID (max 32 characters) and password (max 63 characters).";
-    $("wifiStatus").className = "message bad";
-    return;
-  }
-
-  const button = $("saveWifiButton");
-  button.disabled = true;
-  button.textContent = "Saving...";
-
-  $("wifiStatus").textContent = "Saving Wi-Fi settings...";
-
   try {
-    await set(wifiConfigRef, {
-      ssid: ssid,
-      password: password,
-      updatedAt: serverTimestamp()
-    });
-
-    $("wifiStatus").textContent =
-      "Wi-Fi settings saved! ESP32 will check for updates shortly.";
+    await set(wifiConfigRef, { ssid, password, updatedAt: serverTimestamp() });
+    $("wifiStatus").textContent = "Wi-Fi settings saved!";
     $("wifiStatus").className = "message good";
-
     $("wifiForm").reset();
-    $("wifiPassword").type = "password";
-
   } catch (error) {
-    console.error("Wi-Fi settings error:", error);
-    $("wifiStatus").textContent = "Save failed: " + friendlyError(error);
+    $("wifiStatus").textContent = "Failed: " + friendlyError(error);
     $("wifiStatus").className = "message bad";
-  } finally {
-    button.disabled = false;
-    button.textContent = "Save Wi-Fi Settings";
   }
 });
-
-
-// ===== REDRAW GRAPHS ON RESIZE =====
 
 window.addEventListener("resize", async () => {
   try {
     const snapshot = await get(historyRef);
     renderHistory(snapshot.val());
-  } catch (error) {
-    console.error("Graph redraw failed:", error);
-  }
+  } catch (e) {}
 });
 
 </script>
