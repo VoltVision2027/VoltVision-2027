@@ -4,123 +4,238 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VoltVision | Smart Energy Meter Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#f4f7fc; --panel:#ffffff; --border:#e2e8f0;
-  --text:#1e293b; --muted:#64748b; --primary:#3b82f6;
-  --green:#10b981; --red:#ef4444; --purple:#8b5cf6;
-  --shadow:0 10px 25px -5px rgba(59, 130, 246, 0.08), 0 8px 10px -6px rgba(59, 130, 246, 0.04);
-  --card-radius:20px;
+:root {
+  --bg-gradient: radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12), transparent 40%),
+                 radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.12), transparent 40%),
+                 linear-gradient(135deg, #f0f4fd 0%, #e8eefb 50%, #f4f7fc 100%);
+  --panel-bg: rgba(255, 255, 255, 0.88);
+  --border: rgba(203, 213, 225, 0.8);
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #3b82f6;
+  --green: #10b981;
+  --red: #ef4444;
+  --shadow: 0 12px 32px -4px rgba(59, 130, 246, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  --card-radius: 20px;
 }
-*{box-sizing:border-box}
-body{
-  margin:0; padding:32px 16px; color:var(--text); font-family:'Plus Jakarta Sans', Arial, sans-serif;
-  background:var(--bg); min-height:100vh; -webkit-font-smoothing:antialiased;
-}
-.container{max-width:1160px;margin:auto}
-header,.section-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-header{
-  margin-bottom:28px; padding:24px 32px; border:1px solid var(--border); border-radius:var(--card-radius);
-  background:linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  box-shadow:var(--shadow);
-}
-h1{margin:0;font-size:30px;letter-spacing:-0.5px;font-weight:700}
-h1 span{
-  background:linear-gradient(135deg,#3b82f6 0%,#6366f1 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-h2{margin:0;font-size:20px;font-weight:700;color:#0f172a}
-h3{margin:0 0 12px;font-size:16px;font-weight:700;color:#334155}
-p{line-height:1.6;margin:8px 0 0 0}
-.muted{color:var(--muted);font-size:14px}
-.pill{
-  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
-  border:1px solid var(--border);border-radius:50px;font-size:12px;font-weight:600;
-  color:var(--muted);background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.02)
-}
-.section{
-  position:relative; background:var(--panel);
-  border:1px solid var(--border);border-radius:var(--card-radius);padding:28px;margin-bottom:24px;
-  box-shadow:var(--shadow); transition:transform 0.2s ease, box-shadow 0.2s ease;
-}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:16px;margin-top:20px}
-.metric{
-  padding:22px;border-radius:16px;border:1px solid rgba(255,255,255,0.4);min-width:0;
-  box-shadow:0 10px 20px -5px rgba(0,0,0,0.05);transition:transform 0.25s ease, box-shadow 0.25s ease;
-}
-.metric:hover{transform:translateY(-4px);box-shadow:0 14px 24px -6px rgba(0,0,0,0.08)}
 
-/* Live Energy Monitoring Card Color Accents (Exact order requested) */
-/* 1. Energy (kWh) - Blue Gradient */
-.section .grid .metric:nth-child(1) { background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color:#fff; }
-/* 2. Voltage (V) - Purple Gradient */
-.section .grid .metric:nth-child(2) { background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color:#fff; }
-/* 3. Current (A) - Pink Gradient */
-.section .grid .metric:nth-child(3) { background:linear-gradient(135deg, #ec4899 0%, #be185d 100%); color:#fff; }
-/* 4. Power (W) - Green Gradient */
-.section .grid .metric:nth-child(4) { background:linear-gradient(135deg, #10b981 0%, #047857 100%); color:#fff; }
-/* 5. Frequency (Hz) - Orange Gradient */
-.section .grid .metric:nth-child(5) { background:linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color:#fff; }
-/* 6. Power Factor (PF) - Cyan Gradient */
-.section .grid .metric:nth-child(6) { background:linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); color:#fff; }
+*, *::before, *::after { box-sizing: border-box; }
 
-/* Text color overrides inside the top 6 gradient cards */
+body {
+  margin: 0;
+  padding: 32px 16px;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 1160px; margin: auto; }
+
+header, .section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+header {
+  margin-bottom: 28px;
+  padding: 24px 32px;
+  border-radius: var(--card-radius);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), 
+                    linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: var(--shadow);
+}
+
+h1 { margin: 0; font-size: 30px; letter-spacing: -0.5px; font-weight: 800; }
+h1 span {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+h2 { margin: 0; font-size: 20px; font-weight: 700; color: #0f172a; }
+h3 { margin: 0 0 12px; font-size: 16px; font-weight: 700; color: #334155; }
+p { line-height: 1.6; margin: 8px 0 0 0; }
+.muted { color: var(--muted); font-size: 14px; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.section {
+  position: relative;
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  border-radius: var(--card-radius);
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  border: 2px solid transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
+                    linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.25), rgba(236, 72, 153, 0.4));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.metric {
+  padding: 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  min-width: 0;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.metric:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.12);
+}
+
+/* Bright Gradient Metric Cards */
+.section .grid .metric:nth-child(1) { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: #fff; }
+.section .grid .metric:nth-child(2) { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); color: #fff; }
+.section .grid .metric:nth-child(3) { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); color: #fff; }
+.section .grid .metric:nth-child(4) { background: linear-gradient(135deg, #10b981 0%, #047857 100%); color: #fff; }
+.section .grid .metric:nth-child(5) { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: #fff; }
+.section .grid .metric:nth-child(6) { background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); color: #fff; }
+
 .section .grid .metric:nth-child(-n+6) .metric-label,
-.section .grid .metric:nth-child(-n+6) .metric-unit { color:rgba(255,255,255,0.85); }
-.section .grid .metric:nth-child(-n+6) .metric-value { color:#ffffff; }
+.section .grid .metric:nth-child(-n+6) .metric-unit { color: rgba(255, 255, 255, 0.9); }
+.section .grid .metric:nth-child(-n+6) .metric-value { color: #ffffff; }
 
-/* Non-gradient standard metrics (like history metrics) remain clean light styling */
+/* Non-gradient metric subcards */
 .section .section .grid .metric {
-  background:#f8fafc !important; border:1px solid var(--border) !important; color:var(--text) !important;
+  background: rgba(248, 250, 252, 0.9) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
 }
 .section .section .grid .metric .metric-label,
-.section .section .grid .metric .metric-unit { color:var(--muted) !important; }
-.section .section .grid .metric .metric-value { color:var(--text) !important; }
+.section .section .grid .metric .metric-unit { color: var(--muted) !important; }
+.section .section .grid .metric .metric-value { color: var(--text) !important; }
 
-.metric-label{font-size:13px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
-.metric-value{font-size:28px;font-weight:700;margin-top:10px;overflow-wrap:anywhere;letter-spacing:-1px}
-.metric-unit{font-size:12px;font-weight:500;margin-top:4px}
-.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
-input{
-  width:100%;padding:14px 16px;background:#f8fafc;color:var(--text);
-  border:1px solid var(--border);border-radius:12px;font-size:15px;font-family:inherit;transition:all 0.2s ease;min-width:0
+.metric-label { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+.metric-value { font-size: 28px; font-weight: 800; margin-top: 10px; overflow-wrap: anywhere; letter-spacing: -1px; }
+.metric-unit { font-size: 12px; font-weight: 600; margin-top: 4px; }
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
 }
-input:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(59,130,246,0.12)}
-button{
-  border:0;border-radius:12px;padding:12px 20px;
-  background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);color:white;cursor:pointer;
-  font-size:14px;font-weight:700;font-family:inherit;min-height:46px;
-  box-shadow:0 4px 12px rgba(59,130,246,0.25);transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-button:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,0.35)}
-button:active{transform:translateY(0)}
-button.secondary{background:#f1f5f9;color:#475569;border:1px solid var(--border);box-shadow:none}
-button.secondary:hover{background:#e2e8f0;color:#1e293b;box-shadow:none}
-button.danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);box-shadow:0 4px 12px rgba(239,68,68,0.25)}
-button.danger:hover{box-shadow:0 6px 16px rgba(239,68,68,0.35)}
-button:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.message{font-size:14px;font-weight:500;color:var(--muted);overflow-wrap:anywhere;margin-top:12px}
-.good{color:#059669}.bad{color:#dc2626}
-[hidden]{display:none!important}
-hr{border:0;border-top:1px solid var(--border);margin:26px 0}
-table{width:100%;border-collapse:separate;border-spacing:0;min-width:700px}
-table th,table td{padding:13px 16px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;font-size:13px}
-table th{color:#475569;font-weight:700;background:#f8fafc;border-top:1px solid var(--border)}
-table th:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
-table th:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
-table tr:hover td{background:#f8fafc}
-.table-wrap{overflow-x:auto;margin-top:14px;border:1px solid var(--border);border-radius:14px;background:#fff}
-.chart-box{
-  margin-top:22px;padding:20px;background:#f8fafc;
-  border:1px solid var(--border);border-radius:16px;
+
+.input-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
 }
-.chart{display:block;width:100%;height:240px}
-.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);margin-right:7px}
-footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;font-weight:500}
-@media(max-width:500px){body{padding:12px}h1{font-size:24px}.section{padding:18px}.metric-value{font-size:24px}}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  background: #ffffff;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  min-width: 0;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  min-height: 46px;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4); }
+button:active { transform: translateY(0); }
+button.secondary { background: #f1f5f9; color: #475569; border: 1px solid var(--border); box-shadow: none; }
+button.secondary:hover { background: #e2e8f0; color: #1e293b; box-shadow: none; }
+button.danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3); }
+button:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.message { font-size: 14px; font-weight: 600; color: var(--muted); overflow-wrap: anywhere; margin-top: 12px; }
+.good { color: #059669; }
+.bad { color: #dc2626; }
+[hidden] { display: none !important; }
+
+hr { border: 0; border-top: 1px solid var(--border); margin: 26px 0; }
+
+table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 700px; }
+table th, table td { padding: 13px 16px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; font-size: 13px; }
+table th { color: #475569; font-weight: 700; background: #f8fafc; border-top: 1px solid var(--border); }
+table th:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+table th:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+table tr:hover td { background: #f8fafc; }
+
+.table-wrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--border); border-radius: 14px; background: #fff; }
+.chart-box { margin-top: 22px; padding: 20px; background: #f8fafc; border: 1px solid var(--border); border-radius: 16px; }
+.chart { display: block; width: 100%; height: 240px; }
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); margin-right: 7px; }
+footer { text-align: center; color: var(--muted); font-size: 13px; padding: 20px; font-weight: 600; }
+
+@media(max-width: 500px) {
+  body { padding: 12px; }
+  header { padding: 18px; }
+  h1 { font-size: 24px; }
+  .section { padding: 18px; }
+  .metric-value { font-size: 24px; }
+}
 </style>
 </head>
 
@@ -274,16 +389,23 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;font-wei
   <p id="historyMessage" class="message">History will appear here.</p>
 </section>
 
-<!-- ADMIN ACCESS: COLLAPSED UNTIL THE TOP BUTTON IS PRESSED -->
+<!-- ADMIN ACCESS SECTION -->
 <section class="section" id="adminSection" hidden>
   <div class="section-head">
     <h2>🔐 Admin Access</h2>
     <span class="pill" id="adminStatus">Not logged in</span>
   </div>
+  
   <form id="loginForm">
     <div class="fields">
-      <input id="adminEmail" type="email" placeholder="Admin email" autocomplete="username" required>
-      <input id="adminPassword" type="password" placeholder="Password" autocomplete="current-password" required>
+      <div class="input-group">
+        <label for="adminEmail">Username / Admin Email</label>
+        <input id="adminEmail" type="email" placeholder="Enter admin email" autocomplete="username" required>
+      </div>
+      <div class="input-group">
+        <label for="adminPassword">Password</label>
+        <input id="adminPassword" type="password" placeholder="Enter password" autocomplete="current-password" required>
+      </div>
     </div>
     <div class="actions">
       <button id="loginBtn" type="submit">Login</button>
@@ -302,16 +424,23 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;font-wei
       <button id="passwordToggleBtn" class="secondary" type="button">🔑 Change Password</button>
     </div>
 
+    <!-- WIFI SETTINGS: HIDDEN UNTIL ADMIN TOGGLES IT -->
     <div id="wifiSettingsCard" hidden>
       <hr>
       <h2>📶 ESP32 Wi-Fi / Hotspot Settings</h2>
       <p class="muted">Enter the new hotspot details. Keep the current hotspot on until ESP32 receives the new settings and connects.</p>
       <form id="wifiForm">
         <div class="fields">
-          <input id="wifiSSID" type="text" placeholder="New Hotspot Name (SSID)" autocomplete="off" required>
-          <input id="wifiPassword" type="password" placeholder="New Hotspot Password" autocomplete="new-password" required>
+          <div class="input-group">
+            <label for="wifiSSID">New Hotspot Name (SSID)</label>
+            <input id="wifiSSID" type="text" placeholder="Enter hotspot name" autocomplete="off" required>
+          </div>
+          <div class="input-group">
+            <label for="wifiPassword">New Hotspot Password</label>
+            <input id="wifiPassword" type="password" placeholder="Enter password" autocomplete="new-password" required>
+          </div>
         </div>
-        <label style="display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--muted);cursor:pointer;font-weight:500;">
+        <label style="display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--muted);cursor:pointer;font-weight:600;">
           <input type="checkbox" id="showWifiPassword" style="width:auto;vertical-align:middle"> Show password
         </label>
         <div class="actions"><button id="saveWifiButton" type="submit">Connect New Wi-Fi</button></div>
@@ -332,9 +461,18 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:20px;font-wei
       <h2>🔑 Change Admin Password</h2>
       <form id="passwordForm">
         <div class="fields">
-          <input id="currentPassword" type="password" placeholder="Old Password" autocomplete="current-password" required>
-          <input id="newPassword" type="password" placeholder="New Password (minimum 6 characters)" autocomplete="new-password" minlength="6" required>
-          <input id="confirmPassword" type="password" placeholder="Confirm New Password" autocomplete="new-password" minlength="6" required>
+          <div class="input-group">
+            <label for="currentPassword">Old Password</label>
+            <input id="currentPassword" type="password" placeholder="Old Password" autocomplete="current-password" required>
+          </div>
+          <div class="input-group">
+            <label for="newPassword">New Password</label>
+            <input id="newPassword" type="password" placeholder="Min 6 characters" autocomplete="new-password" minlength="6" required>
+          </div>
+          <div class="input-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input id="confirmPassword" type="password" placeholder="Confirm Password" autocomplete="new-password" minlength="6" required>
+          </div>
         </div>
         <div class="actions"><button id="changePasswordBtn" type="submit">Update Password</button></div>
       </form>
@@ -726,7 +864,7 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   const graphHeight = height - padding * 2;
   const range = max - min || 1;
 
-  ctx.strokeStyle = "#e2e8f0";
+  ctx.strokeStyle = "#cbd5e1";
   ctx.lineWidth = 1;
 
   for (let i = 0; i <= 4; i++) {
