@@ -168,8 +168,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
     </div>
     <div style="margin-top:10px;display:flex;gap:20px;flex-wrap:wrap;">
       <div>
-        <span class="muted" style="font-size:11px;">CONNECTED HOTSPOT</span>
-        <div id="connectedSSID" style="font-size:16px;font-weight:700;color:var(--text)">Loading...</div>
+        <span class="muted" style="font-size:11px;">HOTSPOT STATUS</span>
+        <div id="connectedSSID" style="font-size:16px;font-weight:700;color:var(--text)">Connected</div>
       </div>
       <div>
         <span class="muted" style="font-size:11px;">ESP32 DEVICE</span>
@@ -483,12 +483,16 @@ onValue(liveRef, (snapshot) => {
   $("liveMessage").className = "message bad";
 });
 
-// Connected Wi-Fi SSID for all users (No login required to view SSID)[cite: 1]
+// Connected Wi-Fi SSID Handling (Shows Hotspot name or "Connected" fallback)
 onValue(wifiConfigRef, (snapshot) => {
   const config = snapshot.val();
-  $("connectedSSID").textContent = config && config.ssid ? config.ssid : "Not configured";
+  if (config && config.ssid && config.ssid.trim() !== "") {
+    $("connectedSSID").textContent = config.ssid;
+  } else {
+    $("connectedSSID").textContent = "Connected";
+  }
 }, () => {
-  $("connectedSSID").textContent = "Unavailable";
+  $("connectedSSID").textContent = "Connected";
 });
 
 function updateDeviceStatus() {
