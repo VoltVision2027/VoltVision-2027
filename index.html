@@ -71,6 +71,44 @@ p{line-height:1.5}.muted{color:var(--muted);font-size:14px}
   margin-top: 4px;
 }
 
+.peak-value{
+  font-size:32px;
+  font-weight:800;
+  color:#fbbf24;
+  margin-top:4px;
+}
+
+.peak-history{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.9;
+}
+
+.voltage-alert{
+  margin-top:16px;
+  padding:16px 18px;
+  border-radius:13px;
+  border:1px solid rgba(125,155,255,.3);
+  background:rgba(8,16,40,.82);
+  font-weight:700;
+}
+
+.voltage-alert.normal{
+  color:var(--green);
+  border-color:rgba(57,230,162,.5);
+}
+
+.voltage-alert.warning{
+  color:#fbbf24;
+  border-color:rgba(251,191,36,.6);
+}
+
+.voltage-alert.danger{
+  color:var(--red);
+  border-color:rgba(255,102,133,.6);
+}
+
 .section{
   position:relative;background:linear-gradient(145deg,rgba(20,31,68,.88),rgba(13,19,45,.92)) padding-box,
   linear-gradient(125deg,rgba(34,211,238,.7),rgba(99,102,241,.55),rgba(192,132,252,.7)) border-box;
@@ -128,6 +166,7 @@ table th{color:#8bdcff;font-weight:700}
 footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
 
 @media(max-width:768px){
+  body{padding:12px}
   header{flex-direction:column;align-items:flex-start}
   .actions{width:100%;justify-content:space-between}
 }
@@ -174,6 +213,23 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
       </div>
     </div>
   </div>
+
+  <!-- DAILY PEAK LOAD -->
+  <div class="top-card">
+    <span class="muted" style="font-size:12px;font-weight:700;letter-spacing:0.5px;">
+      TODAY'S PEAK LOAD
+    </span>
+    <div>
+      <span class="peak-value" id="peakPower">--</span>
+      <span class="muted" style="font-size:14px;font-weight:600;">W</span>
+    </div>
+    <div class="muted" style="font-size:12px;margin-top:6px;">
+      Peak Time: <span id="peakTime">--</span>
+    </div>
+    <div class="peak-history" id="peakHistory">
+      Daily peak history will appear here.
+    </div>
+  </div>
 </div>
 
 <section class="section">
@@ -209,6 +265,12 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
       <div class="metric-unit">PF</div>
     </div>
   </div>
+
+  <!-- VOLTAGE ALERT -->
+  <div id="voltageAlert" class="voltage-alert warning" role="status">
+    Checking voltage status...
+  </div>
+
   <p class="message" id="liveMessage">Connecting to Firebase...</p>
 </section>
 
@@ -372,6 +434,7 @@ import {
 } from
 "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
+// FIREBASE CONFIGURATION - ORIGINAL CONFIGURATION RETAINED
 const firebaseConfig = {
   apiKey: "AIzaSyAinEB-eaUeM4-B_ul6PmsE49uHCQHXLsY",
   authDomain: "voltvision-2027.firebaseapp.com",
@@ -397,6 +460,139 @@ const wifiConfigRef = ref(db, "wifi_config");
 let latestMeterUpdate = 0;
 let rawHistoryData = {};
 let stopWifiListener = null;
+
+// =====================================================
+// DAILY PEAK LOAD TRACKING
+// =====================================================
+
+const PEAK_STORAGE_KEY = "voltVisionDailyPeakHistory";
+
+function getLocalDateKey(timestamp = Date.now()) {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function getPeakHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(PEAK_STORAGE_KEY)) || {};
+  } catch (error) {
+    console.error("Peak history read error:", error);
+    return {};
+  }
+}
+
+function savePeakHistory(history) {
+  try {
+    const dates = Object.keys(history).sort();
+
+    while (dates.length > 30) {
+      delete history[dates.shift()];
+    }
+
+    localStorage.setItem(PEAK_STORAGE_KEY, JSON.stringify(history));
+  } catch (error) {
+    console.error("Peak history save error:", error);
+  }
+}
+
+function updatePeakLoad(power, timestamp = Date.now()) {
+  const value = Number(power);
+
+  if (!Number.isFinite(value) || value < 0) return;
+
+  const dateKey = getLocalDateKey(timestamp);
+  const history = getPeakHistory();
+  const existingPeak = history[dateKey];
+
+  if (!existingPeak || value > Number(existingPeak.power)) {
+    history[dateKey] = {
+      power: value,
+      timestamp: timestamp
+    };
+
+    savePeakHistory(history);
+    renderPeakHistory();
+  }
+}
+
+function renderPeakHistory() {
+  const history = getPeakHistory();
+  const today = getLocalDateKey();
+  const todayPeak = history[today];
+
+  $("peakPower").textContent = todayPeak
+    ? Number(todayPeak.power).toFixed(2)
+    : "--";
+
+  $("peakTime").textContent = todayPeak
+    ? new Date(todayPeak.timestamp).toLocaleTimeString()
+    : "No peak recorded";
+
+  const entries = Object.entries(history)
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .slice(0, 7);
+
+  const container = $("peakHistory");
+  container.replaceChildren();
+
+  if (!entries.length) {
+    container.textContent = "No daily peak history yet.";
+    return;
+  }
+
+  entries.forEach(([date, item]) => {
+    const line = document.createElement("div");
+    const dateText = date === today ? "Today" : date;
+
+    line.textContent =
+      `${dateText}: ${Number(item.power).toFixed(2)} W · ` +
+      new Date(item.timestamp).toLocaleTimeString();
+
+    container.appendChild(line);
+  });
+}
+
+// =====================================================
+// VOLTAGE ALERT SYSTEM
+// =====================================================
+
+function updateVoltageAlert(voltage) {
+  const value = Number(voltage);
+  const alert = $("voltageAlert");
+
+  if (!Number.isFinite(value)) {
+    alert.textContent = "Voltage status unavailable.";
+    alert.className = "voltage-alert warning";
+    return;
+  }
+
+  if (value < 210) {
+    alert.textContent =
+      `⚠️ UNDER VOLTAGE: ${value.toFixed(2)} V — Voltage is below 210 V.`;
+    alert.className = "voltage-alert danger";
+
+  } else if (value > 260) {
+    alert.textContent =
+      `⚠️ OVER VOLTAGE: ${value.toFixed(2)} V — Voltage is above 260 V.`;
+    alert.className = "voltage-alert danger";
+
+  } else {
+    alert.textContent =
+      `✓ NORMAL VOLTAGE: ${value.toFixed(2)} V — Supply voltage is within the normal range.`;
+    alert.className = "voltage-alert normal";
+  }
+}
+
+// Display saved peak history when page opens
+renderPeakHistory();
+
+// =====================================================
+// COMMON MESSAGE FUNCTIONS
+// =====================================================
 
 function showAuthMessage(message, type = "") {
   $("authMessage").textContent = message;
@@ -429,13 +625,18 @@ function friendlyError(error) {
   return messages[code] || error?.message || "Something went wrong.";
 }
 
+// =====================================================
 // LIVE DATA
+// =====================================================
+
 onValue(liveRef, (snapshot) => {
   const data = snapshot.val();
 
   if (!data) {
     latestMeterUpdate = 0;
     updateDeviceStatus();
+    updateVoltageAlert(NaN);
+
     $("connectionText").textContent = "Connected · No data";
     $("liveMessage").textContent = "Firebase connected, but no meter data was found.";
     return;
@@ -457,6 +658,16 @@ onValue(liveRef, (snapshot) => {
   display("energy", data.energy, 3);
   display("frequency", data.frequency, 1);
   display("pf", data.pf, 2);
+
+  // VOLTAGE ALERT UPDATE
+  updateVoltageAlert(data.voltage);
+
+  // PEAK LOAD UPDATE
+  if (data.lastUpdate) {
+    updatePeakLoad(data.power, Number(data.lastUpdate));
+  } else {
+    updatePeakLoad(data.power);
+  }
 
   $("connectionText").textContent = "Connected";
   $("connectionText").style.color = "var(--green)";
@@ -480,7 +691,10 @@ onValue(liveRef, (snapshot) => {
   $("liveMessage").className = "message bad";
 });
 
+// =====================================================
 // DEVICE STATUS
+// =====================================================
+
 function updateDeviceStatus() {
   const age = latestMeterUpdate ? Date.now() - latestMeterUpdate : Infinity;
   const online = age >= 0 && age < 30000;
@@ -496,7 +710,10 @@ function updateDeviceStatus() {
 
 setInterval(updateDeviceStatus, 5000);
 
+// =====================================================
 // ADMIN PANEL OPEN/CLOSE
+// =====================================================
+
 $("adminOpenBtn").addEventListener("click", () => {
   $("adminSection").hidden = !$("adminSection").hidden;
 
@@ -509,7 +726,10 @@ $("adminCloseBtn").addEventListener("click", () => {
   $("adminSection").hidden = true;
 });
 
+// =====================================================
 // ADMIN TOOLS
+// =====================================================
+
 $("wifiToggleBtn").addEventListener("click", () => {
   $("wifiSettingsCard").hidden = !$("wifiSettingsCard").hidden;
   $("historyTools").hidden = true;
@@ -528,7 +748,10 @@ $("passwordToggleBtn").addEventListener("click", () => {
   $("historyTools").hidden = true;
 });
 
+// =====================================================
 // ADMIN LOGIN
+// =====================================================
+
 $("loginForm").addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -557,7 +780,10 @@ $("loginForm").addEventListener("submit", async (event) => {
   }
 });
 
+// =====================================================
 // ADMIN LOGOUT
+// =====================================================
+
 $("logoutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
@@ -575,7 +801,10 @@ $("logoutBtn").addEventListener("click", async () => {
   }
 });
 
+// =====================================================
 // ADMIN PASSWORD RESET
+// =====================================================
+
 $("emailResetBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
 
@@ -600,7 +829,10 @@ $("emailResetBtn").addEventListener("click", async () => {
   }
 });
 
+// =====================================================
 // CSV DOWNLOAD
+// =====================================================
+
 $("downloadCsvBtn").addEventListener("click", () => {
   const entries = Object.entries(rawHistoryData || {})
     .filter(([id, item]) => item && Number.isFinite(Number(item.timestamp)))
@@ -631,7 +863,10 @@ $("downloadCsvBtn").addEventListener("click", () => {
   document.body.removeChild(link);
 });
 
+// =====================================================
 // HISTORY TABLE
+// =====================================================
+
 function renderHistory(records) {
   rawHistoryData = records || {};
 
@@ -686,7 +921,10 @@ function renderHistory(records) {
   drawAllCharts(entries.slice(-30));
 }
 
+// =====================================================
 // CHARTS
+// =====================================================
+
 function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   const canvas = $(canvasId);
   const ctx = canvas.getContext("2d");
@@ -807,7 +1045,10 @@ function drawAllCharts(entries) {
   drawChart("energyChart", entries, "energy", "Energy (kWh)", true);
 }
 
+// =====================================================
 // HISTORY FIREBASE LISTENER
+// =====================================================
+
 onValue(historyRef, (snapshot) => {
   renderHistory(snapshot.val());
   showHistoryMessage("History updated.", "good");
@@ -816,7 +1057,10 @@ onValue(historyRef, (snapshot) => {
   showHistoryMessage("History error: " + error.message, "bad");
 });
 
+// =====================================================
 // CLEAR HISTORY
+// =====================================================
+
 $("resetHistoryBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
 
@@ -835,7 +1079,10 @@ $("resetHistoryBtn").addEventListener("click", async () => {
   }
 });
 
+// =====================================================
 // ADMIN AUTH STATE + WIFI SETTINGS LISTENER
+// =====================================================
+
 onAuthStateChanged(auth, async (user) => {
 
   const loggedIn = Boolean(user && user.uid === ADMIN_UID);
@@ -903,7 +1150,10 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+// =====================================================
 // CHANGE ADMIN PASSWORD
+// =====================================================
+
 $("passwordForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -935,12 +1185,18 @@ $("passwordForm").addEventListener("submit", async (e) => {
   }
 });
 
+// =====================================================
 // SHOW/HIDE WIFI PASSWORD
+// =====================================================
+
 $("showWifiPassword").addEventListener("change", function () {
   $("wifiPassword").type = this.checked ? "text" : "password";
 });
 
+// =====================================================
 // SAVE NEW WIFI / HOTSPOT DETAILS
+// =====================================================
+
 $("wifiForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -995,7 +1251,10 @@ $("wifiForm").addEventListener("submit", async (e) => {
   }
 });
 
+// =====================================================
 // RESIZE CHARTS
+// =====================================================
+
 window.addEventListener("resize", async () => {
   try {
     const snapshot = await get(historyRef);
