@@ -149,9 +149,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
   </div>
 </header>
 
-<!-- STARTING SECTION: ENERGY CARD & SYSTEM STATUS -->
 <div class="top-cards-grid">
-  <!-- Top Energy Box -->
   <div class="top-card">
     <span class="muted" style="font-size:12px;font-weight:700;letter-spacing:0.5px;">TOTAL ENERGY CONSUMED</span>
     <div>
@@ -160,7 +158,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
     </div>
   </div>
 
-  <!-- Compact Network & System Status Box -->
   <div class="top-card">
     <div style="display:flex;justify-content:space-between;align-items:center;">
       <span class="muted" style="font-size:12px;font-weight:700;letter-spacing:0.5px;">SYSTEM & NETWORK STATUS</span>
@@ -179,7 +176,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
   </div>
 </div>
 
-<!-- 5 LIVE MONITORING BLOCKS -->
 <section class="section">
   <div class="section-head">
     <h2>Live Energy Monitoring</h2>
@@ -216,7 +212,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
   <p class="message" id="liveMessage">Connecting to Firebase...</p>
 </section>
 
-<!-- 4 GRAPHS SECTION -->
 <section class="section">
   <div class="section-head">
     <h2>📈 Energy Analysis Graphs</h2>
@@ -240,7 +235,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
   </div>
 </section>
 
-<!-- ENERGY HISTORY RECORDS & DOWNLOAD BUTTON -->
 <section class="section">
   <div class="section-head">
     <h2>📊 Energy History Records</h2>
@@ -280,7 +274,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
   <p id="historyMessage" class="message">History will appear here.</p>
 </section>
 
-<!-- ADMIN ACCESS PANEL -->
 <section class="section" id="adminSection" hidden>
   <div class="section-head">
     <h2>🔐 Admin Access</h2>
@@ -309,11 +302,10 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
       <button id="passwordToggleBtn" class="secondary" type="button">🔑 Change Password</button>
     </div>
 
-    <!-- WIFI SETTINGS -->
     <div id="wifiSettingsCard" hidden>
       <hr>
       <h2>📶 ESP32 Wi-Fi / Hotspot Settings</h2>
-      <p class="muted">Enter the new hotspot details. Keep current hotspot active until ESP32 receives settings.</p>
+      <p class="muted">Enter the new hotspot details. ESP32 will receive these settings when it checks Firebase.</p>
       <form id="wifiForm">
         <div class="fields">
           <input id="wifiSSID" type="text" placeholder="New Hotspot Name (SSID)" autocomplete="off" required>
@@ -322,12 +314,13 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
         <label style="display:block;margin-top:12px;color:var(--muted)">
           <input type="checkbox" id="showWifiPassword" style="width:auto;vertical-align:middle"> Show password
         </label>
-        <div class="actions" style="margin-top:14px"><button id="saveWifiButton" type="submit">Connect New Wi-Fi</button></div>
+        <div class="actions" style="margin-top:14px">
+          <button id="saveWifiButton" type="submit">Connect New Wi-Fi</button>
+        </div>
       </form>
       <p id="wifiStatus" class="message" aria-live="polite">Admin login required.</p>
     </div>
 
-    <!-- HISTORY CLEAR TOOLS -->
     <div id="historyTools" hidden>
       <hr>
       <h2>📊 History Management</h2>
@@ -336,7 +329,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:12px}
       <p id="historyAdminMessage" class="message" aria-live="polite"></p>
     </div>
 
-    <!-- CHANGE PASSWORD -->
     <div id="passwordAccess" hidden>
       <hr>
       <h2>🔑 Change Admin Password</h2>
@@ -381,7 +373,7 @@ import {
 "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAinEB-eaUeM4-B_ul6PmsE49uHCQHXLsY",
+  apiKey: "YOUR_FIREBASE_WEB_API_KEY",
   authDomain: "voltvision-2027.firebaseapp.com",
   databaseURL: "https://voltvision-2027-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "voltvision-2027",
@@ -401,8 +393,10 @@ const $ = (id) => document.getElementById(id);
 const liveRef = ref(db, "energyMeter");
 const historyRef = ref(db, "energy_history");
 const wifiConfigRef = ref(db, "wifi_config");
+
 let latestMeterUpdate = 0;
 let rawHistoryData = {};
+let stopWifiListener = null;
 
 function showAuthMessage(message, type = "") {
   $("authMessage").textContent = message;
@@ -429,12 +423,13 @@ function friendlyError(error) {
     "auth/too-many-requests": "Too many attempts. Try again later.",
     "auth/network-request-failed": "Network error. Check your internet.",
     "auth/weak-password": "Choose a stronger password (at least 6 characters).",
-    "auth/requires-recent-login": "Sign in again, then change your password."
+    "auth/requires-recent-login": "Sign in again, then change your password.",
+    "PERMISSION_DENIED": "Permission denied. Check Firebase Rules."
   };
   return messages[code] || error?.message || "Something went wrong.";
 }
 
-// Live Data Handling
+// LIVE DATA
 onValue(liveRef, (snapshot) => {
   const data = snapshot.val();
 
@@ -453,8 +448,9 @@ onValue(liveRef, (snapshot) => {
       !Number.isFinite(number) ? "--" : number.toFixed(digits);
   };
 
-  latestMeterUpdate = Number(data.lastUpdate) || Date.now();
+  latestMeterUpdate = Number(data.lastUpdate) || 0;
   updateDeviceStatus();
+
   display("voltage", data.voltage);
   display("current", data.current, 3);
   display("power", data.power, 2);
@@ -476,6 +472,7 @@ onValue(liveRef, (snapshot) => {
 
   $("liveMessage").textContent = "Live meter data received successfully.";
   $("liveMessage").className = "message good";
+
 }, (error) => {
   $("connectionText").textContent = "Error";
   $("connectionText").style.color = "var(--red)";
@@ -483,105 +480,127 @@ onValue(liveRef, (snapshot) => {
   $("liveMessage").className = "message bad";
 });
 
-// Connected Wi-Fi SSID Handling (Shows Hotspot name or "Connected" fallback)
-onValue(wifiConfigRef, (snapshot) => {
-  const config = snapshot.val();
-  if (config && config.ssid && config.ssid.trim() !== "") {
-    $("connectedSSID").textContent = config.ssid;
-  } else {
-    $("connectedSSID").textContent = "Connected";
-  }
-}, () => {
-  $("connectedSSID").textContent = "Connected";
-});
-
+// DEVICE STATUS
 function updateDeviceStatus() {
   const age = latestMeterUpdate ? Date.now() - latestMeterUpdate : Infinity;
-  const online = age < 30000;
+  const online = age >= 0 && age < 30000;
+
   $("systemStatus").innerHTML = online
     ? '<span class="status-dot"></span>ONLINE'
     : '<span class="status-dot" style="background:var(--red);box-shadow:0 0 10px var(--red)"></span>OFFLINE';
+
   $("systemStatus").style.color = online ? "var(--green)" : "var(--red)";
   $("deviceStatus").textContent = online ? "ONLINE" : "OFFLINE";
   $("deviceStatus").style.color = online ? "var(--green)" : "var(--red)";
 }
+
 setInterval(updateDeviceStatus, 5000);
 
-// Admin Controls
+// ADMIN PANEL OPEN/CLOSE
 $("adminOpenBtn").addEventListener("click", () => {
   $("adminSection").hidden = !$("adminSection").hidden;
+
   if (!$("adminSection").hidden) {
     $("adminSection").scrollIntoView({behavior:"smooth", block:"start"});
   }
 });
+
 $("adminCloseBtn").addEventListener("click", () => {
   $("adminSection").hidden = true;
 });
+
+// ADMIN TOOLS
 $("wifiToggleBtn").addEventListener("click", () => {
   $("wifiSettingsCard").hidden = !$("wifiSettingsCard").hidden;
   $("historyTools").hidden = true;
   $("passwordAccess").hidden = true;
 });
+
 $("historyToggleBtn").addEventListener("click", () => {
   $("historyTools").hidden = !$("historyTools").hidden;
   $("wifiSettingsCard").hidden = true;
   $("passwordAccess").hidden = true;
 });
+
 $("passwordToggleBtn").addEventListener("click", () => {
   $("passwordAccess").hidden = !$("passwordAccess").hidden;
   $("wifiSettingsCard").hidden = true;
   $("historyTools").hidden = true;
 });
 
+// ADMIN LOGIN
 $("loginForm").addEventListener("submit", async (event) => {
   event.preventDefault();
+
   $("loginBtn").disabled = true;
   showAuthMessage("Signing in...");
 
   try {
     const email = $("adminEmail").value.trim();
     const password = $("adminPassword").value;
-    await signInWithEmailAndPassword(auth, email, password);
+
+    const result = await signInWithEmailAndPassword(auth, email, password);
+
+    if (result.user.uid !== ADMIN_UID) {
+      await signOut(auth);
+      showAuthMessage("This account is not authorized as Admin.", "bad");
+      return;
+    }
+
     $("adminPassword").value = "";
+
   } catch (error) {
     showAuthMessage(friendlyError(error), "bad");
+
   } finally {
     $("loginBtn").disabled = false;
   }
 });
 
+// ADMIN LOGOUT
 $("logoutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
+
     $("adminTools").hidden = true;
     $("wifiSettingsCard").hidden = true;
     $("historyTools").hidden = true;
     $("passwordAccess").hidden = true;
     $("adminSection").hidden = true;
+
     showAuthMessage("Logged out successfully.", "good");
+
   } catch (error) {
     showAuthMessage(friendlyError(error), "bad");
   }
 });
 
+// ADMIN PASSWORD RESET
 $("emailResetBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
+
   if (!user || user.uid !== ADMIN_UID) return;
 
   $("emailResetBtn").disabled = true;
+
   try {
     await sendPasswordResetEmail(auth, user.email);
-    $("emailResetMessage").textContent = "Password reset link sent to registered email.";
+
+    $("emailResetMessage").textContent =
+      "Password reset link sent to registered email.";
+
     $("emailResetMessage").className = "message good";
+
   } catch (error) {
     $("emailResetMessage").textContent = friendlyError(error);
     $("emailResetMessage").className = "message bad";
+
   } finally {
     $("emailResetBtn").disabled = false;
   }
 });
 
-// CSV Export Feature
+// CSV DOWNLOAD
 $("downloadCsvBtn").addEventListener("click", () => {
   const entries = Object.entries(rawHistoryData || {})
     .filter(([id, item]) => item && Number.isFinite(Number(item.timestamp)))
@@ -592,24 +611,30 @@ $("downloadCsvBtn").addEventListener("click", () => {
     return;
   }
 
-  let csvContent = "data:text/csv;charset=utf-8,Date & Time,Voltage (V),Current (A),Power (W),Energy (kWh),Frequency (Hz),PF\n";
+  let csvContent =
+    "data:text/csv;charset=utf-8,Date & Time,Voltage (V),Current (A),Power (W),Energy (kWh),Frequency (Hz),PF\n";
+
   entries.forEach(([id, item]) => {
     const date = new Date(Number(item.timestamp)).toLocaleString().replace(",", "");
+
     csvContent += `${date},${item.voltage ?? 0},${item.current ?? 0},${item.power ?? 0},${item.energy ?? 0},${item.frequency ?? 0},${item.pf ?? 0}\n`;
   });
 
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
+
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `VoltVision_Energy_History_${Date.now()}.csv`);
+
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 });
 
-// Render History Table & Graphs
+// HISTORY TABLE
 function renderHistory(records) {
   rawHistoryData = records || {};
+
   const entries = Object.entries(records || {})
     .filter(([id, item]) => item && Number.isFinite(Number(item.timestamp)))
     .sort((a, b) => Number(a[1].timestamp) - Number(b[1].timestamp));
@@ -618,13 +643,17 @@ function renderHistory(records) {
 
   if (entries.length === 0) {
     $("historyEnergy").textContent = "--";
-    $("historyTable").innerHTML = '<tr><td colspan="7">No history records found.</td></tr>';
+    $("historyTable").innerHTML =
+      '<tr><td colspan="7">No history records found.</td></tr>';
+
     $("historyStatus").textContent = "No records";
+
     drawAllCharts([]);
     return;
   }
 
   $("historyStatus").textContent = "Loaded";
+
   const latest = entries[entries.length - 1][1];
   $("historyEnergy").textContent = Number(latest.energy ?? 0).toFixed(3);
 
@@ -634,6 +663,7 @@ function renderHistory(records) {
   entries.slice(-100).reverse().forEach(([id, item]) => {
     const row = document.createElement("tr");
     const date = new Date(Number(item.timestamp));
+
     const values = [
       date.toLocaleString(),
       Number(item.voltage ?? 0).toFixed(2),
@@ -643,17 +673,20 @@ function renderHistory(records) {
       Number(item.frequency ?? 0).toFixed(2),
       Number(item.pf ?? 0).toFixed(2)
     ];
+
     values.forEach(val => {
       const cell = document.createElement("td");
       cell.textContent = val;
       row.appendChild(cell);
     });
+
     tbody.appendChild(row);
   });
 
   drawAllCharts(entries.slice(-30));
 }
 
+// CHARTS
 function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   const canvas = $(canvasId);
   const ctx = canvas.getContext("2d");
@@ -663,6 +696,7 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
 
   canvas.width = width * ratio;
   canvas.height = height * ratio;
+
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
   ctx.clearRect(0, 0, width, height);
 
@@ -676,18 +710,24 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   let points = entries.map((entry, index) => {
     const item = entry[1];
     let value = Number(item[field]);
+
     if (!Number.isFinite(value)) value = 0;
 
     if (intervalEnergy) {
       if (index === 0) return null;
+
       const prev = Number(entries[index - 1][1].energy);
       const curr = Number(item.energy);
+
       if (!Number.isFinite(prev) || !Number.isFinite(curr)) return null;
+
       value = curr - prev;
+
       if (value < 0) return null;
     }
 
     return { value, timestamp: Number(item.timestamp) };
+
   }).filter(p => p !== null);
 
   if (!points.length) {
@@ -700,6 +740,7 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   const values = points.map(p => p.value);
   const max = Math.max(...values, 0);
   const min = Math.min(...values, 0);
+
   const padding = 35;
   const graphWidth = width - padding * 2;
   const graphHeight = height - padding * 2;
@@ -710,6 +751,7 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
 
   for (let i = 0; i <= 4; i++) {
     const y = padding + graphHeight * i / 4;
+
     ctx.beginPath();
     ctx.moveTo(padding, y);
     ctx.lineTo(width - padding, y);
@@ -718,6 +760,7 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
 
   ctx.fillStyle = "#aab8dc";
   ctx.font = "10px 'Plus Jakarta Sans'";
+
   for (let i = 0; i <= 4; i++) {
     const value = max - (range * i / 4);
     ctx.fillText(value.toFixed(2), 3, padding + graphHeight * i / 4 + 4);
@@ -728,17 +771,25 @@ function drawChart(canvasId, entries, field, label, intervalEnergy = false) {
   ctx.beginPath();
 
   points.forEach((p, index) => {
-    const x = padding + (points.length === 1 ? graphWidth / 2 : index * graphWidth / (points.length - 1));
+    const x = padding +
+      (points.length === 1 ? graphWidth / 2 : index * graphWidth / (points.length - 1));
+
     const y = height - padding - ((p.value - min) / range) * graphHeight;
+
     if (index === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   });
+
   ctx.stroke();
 
   ctx.fillStyle = "#a78bfa";
+
   points.forEach((p, index) => {
-    const x = padding + (points.length === 1 ? graphWidth / 2 : index * graphWidth / (points.length - 1));
+    const x = padding +
+      (points.length === 1 ? graphWidth / 2 : index * graphWidth / (points.length - 1));
+
     const y = height - padding - ((p.value - min) / range) * graphHeight;
+
     ctx.beginPath();
     ctx.arc(x, y, 3, 0, Math.PI * 2);
     ctx.fill();
@@ -756,47 +807,108 @@ function drawAllCharts(entries) {
   drawChart("energyChart", entries, "energy", "Energy (kWh)", true);
 }
 
+// HISTORY FIREBASE LISTENER
 onValue(historyRef, (snapshot) => {
   renderHistory(snapshot.val());
   showHistoryMessage("History updated.", "good");
+
 }, (error) => {
   showHistoryMessage("History error: " + error.message, "bad");
 });
 
+// CLEAR HISTORY
 $("resetHistoryBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
+
   if (!user || user.uid !== ADMIN_UID) return;
+
   if (!confirm("Delete all energy history records?")) return;
 
   try {
     await remove(historyRef);
     $("historyAdminMessage").textContent = "History cleared.";
+    $("historyAdminMessage").className = "message good";
+
   } catch (error) {
-    $("historyAdminMessage").textContent = "Error: " + error.message;
+    $("historyAdminMessage").textContent = "Error: " + friendlyError(error);
+    $("historyAdminMessage").className = "message bad";
   }
 });
 
+// ADMIN AUTH STATE + WIFI SETTINGS LISTENER
 onAuthStateChanged(auth, async (user) => {
+
   const loggedIn = Boolean(user && user.uid === ADMIN_UID);
-  $("adminStatus").textContent = loggedIn ? "Admin logged in" : "Not logged in";
-  $("adminStatus").style.color = loggedIn ? "var(--green)" : "var(--muted)";
+
+  $("adminStatus").textContent =
+    loggedIn ? "Admin logged in" : "Not logged in";
+
+  $("adminStatus").style.color =
+    loggedIn ? "var(--green)" : "var(--muted)";
+
   $("loginBtn").hidden = loggedIn;
   $("logoutBtn").hidden = !loggedIn;
-  $("adminOpenBtn").textContent = loggedIn ? "⚙️ Admin Panel" : "🔐 Admin Login";
+
+  $("adminOpenBtn").textContent =
+    loggedIn ? "⚙️ Admin Panel" : "🔐 Admin Login";
+
   $("adminTools").hidden = !loggedIn;
   $("adminEmail").disabled = loggedIn;
   $("adminPassword").hidden = loggedIn;
 
   if (loggedIn) {
+
     $("adminSection").hidden = false;
     $("adminEmail").value = user.email || "";
+
     showAuthMessage("Authenticated.", "good");
+
+    // WIFI CONFIG READ ONLY AFTER ADMIN LOGIN
+    if (stopWifiListener) {
+      stopWifiListener();
+      stopWifiListener = null;
+    }
+
+    stopWifiListener = onValue(wifiConfigRef, (snapshot) => {
+      const config = snapshot.val();
+
+      if (config && config.ssid) {
+        $("connectedSSID").textContent = config.ssid;
+        $("wifiStatus").textContent = "Saved hotspot: " + config.ssid;
+        $("wifiStatus").className = "message good";
+      } else {
+        $("connectedSSID").textContent = "Connected";
+        $("wifiStatus").textContent = "No hotspot settings saved yet.";
+        $("wifiStatus").className = "message";
+      }
+
+    }, (error) => {
+      $("wifiStatus").textContent = "Wi-Fi read error: " + friendlyError(error);
+      $("wifiStatus").className = "message bad";
+    });
+
+  } else {
+
+    // STOP WIFI CONFIG LISTENER WHEN ADMIN LOGS OUT
+    if (stopWifiListener) {
+      stopWifiListener();
+      stopWifiListener = null;
+    }
+
+    $("connectedSSID").textContent = "Connected";
+    $("adminTools").hidden = true;
+    $("wifiSettingsCard").hidden = true;
+    $("historyTools").hidden = true;
+    $("passwordAccess").hidden = true;
   }
 });
 
+// CHANGE ADMIN PASSWORD
 $("passwordForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const user = auth.currentUser;
+
   if (!user || user.uid !== ADMIN_UID) return;
 
   const currentPassword = $("currentPassword").value;
@@ -810,43 +922,87 @@ $("passwordForm").addEventListener("submit", async (e) => {
 
   try {
     const cred = EmailAuthProvider.credential(user.email, currentPassword);
+
     await reauthenticateWithCredential(user, cred);
     await updatePassword(user, newPassword);
+
     $("passwordForm").reset();
+
     showPasswordMessage("Password updated.", "good");
+
   } catch (error) {
     showPasswordMessage(friendlyError(error), "bad");
   }
 });
 
+// SHOW/HIDE WIFI PASSWORD
 $("showWifiPassword").addEventListener("change", function () {
   $("wifiPassword").type = this.checked ? "text" : "password";
 });
 
+// SAVE NEW WIFI / HOTSPOT DETAILS
 $("wifiForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const user = auth.currentUser;
-  if (!user || user.uid !== ADMIN_UID) return;
+
+  if (!user || user.uid !== ADMIN_UID) {
+    $("wifiStatus").textContent = "Admin login required.";
+    $("wifiStatus").className = "message bad";
+    return;
+  }
 
   const ssid = $("wifiSSID").value.trim();
   const password = $("wifiPassword").value;
 
-  try {
-    await set(wifiConfigRef, { ssid, password, updatedAt: serverTimestamp() });
-    $("wifiStatus").textContent = "Wi-Fi settings saved!";
-    $("wifiStatus").className = "message good";
-    $("wifiForm").reset();
-  } catch (error) {
-    $("wifiStatus").textContent = "Failed: " + friendlyError(error);
+  if (!ssid || !password) {
+    $("wifiStatus").textContent = "Enter both hotspot name and password.";
     $("wifiStatus").className = "message bad";
+    return;
+  }
+
+  $("saveWifiButton").disabled = true;
+  $("wifiStatus").textContent = "Saving new hotspot settings...";
+  $("wifiStatus").className = "message";
+
+  try {
+
+    await set(wifiConfigRef, {
+      ssid: ssid,
+      password: password,
+      updatedAt: serverTimestamp()
+    });
+
+    $("connectedSSID").textContent = ssid;
+
+    $("wifiStatus").textContent =
+      "New hotspot settings saved successfully! ESP32 will receive them when it checks Firebase.";
+
+    $("wifiStatus").className = "message good";
+
+    $("wifiForm").reset();
+    $("wifiPassword").type = "password";
+
+  } catch (error) {
+
+    $("wifiStatus").textContent =
+      "Failed: " + friendlyError(error);
+
+    $("wifiStatus").className = "message bad";
+
+  } finally {
+    $("saveWifiButton").disabled = false;
   }
 });
 
+// RESIZE CHARTS
 window.addEventListener("resize", async () => {
   try {
     const snapshot = await get(historyRef);
     renderHistory(snapshot.val());
-  } catch (e) {}
+  } catch (e) {
+    console.error("Chart resize error:", e);
+  }
 });
 
 </script>
